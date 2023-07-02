@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: '海因飞',
+  title: 'heinfy',
   tagline: '一个整理笔记、写博客和展示项目的网站',
   favicon: 'img/favicon.ico',
 
@@ -29,7 +29,7 @@ const config = {
   // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'zh-Hans',
-    locales: ['zh-Hans'],
+    locales: ['zh-Hans']
   },
 
   plugins: [require.resolve('docusaurus-lunr-search')],
@@ -43,21 +43,19 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/heinfy/blog/tree/main/docs',
+          editUrl: 'https://github.com/heinfy/blog/tree/main/docs'
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/heinfy/blog/tree/main/blog',
+          editUrl: 'https://github.com/heinfy/blog/tree/main/blog'
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
-      }),
-    ],
+          customCss: require.resolve('./src/css/custom.css')
+        }
+      })
+    ]
   ],
 
   themeConfig:
@@ -66,25 +64,45 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: '海因飞',
+        title: 'heinfy',
         logo: {
-          alt: '海因飞的 logo',
-          src: 'img/logo.svg',
+          alt: "heinfy'ss logo",
+          src: 'img/logo.svg'
         },
         items: [
+          // cli 自带的侧边栏，我把文档放到 docs/docusaurus/
           {
             type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
+            sidebarId: 'docusaurus',
             position: 'left',
-            label: 'Tutorial',
+            label: 'docusaurus'
           },
-          {to: '/blog', label: '博客', position: 'left'},
+          // 导航栏链接到侧边栏
+          {
+            type: 'docSidebar',
+            position: 'left',
+            sidebarId: 'react',
+            label: 'React'
+          },
+          {
+            type: 'docSidebar',
+            position: 'left',
+            sidebarId: 'vue',
+            label: 'Vue'
+          },
+          {
+            type: 'docSidebar',
+            position: 'left',
+            sidebarId: 'liunx',
+            label: 'Liunx'
+          },
+          { to: '/blog', label: '博客', position: 'left' },
           {
             href: 'https://github.com/heinfy',
             label: 'GitHub',
-            position: 'right',
-          },
-        ],
+            position: 'right'
+          }
+        ]
       },
       footer: {
         style: 'dark',
@@ -94,37 +112,36 @@ const config = {
             items: [
               {
                 label: 'Tutorial',
-                to: '/docs/intro',
-              },
-            ],
+                to: '/docs/intro'
+              }
+            ]
           },
           {
             title: '博客',
             items: [
               {
                 label: '博客',
-                to: '/blog',
-              },
-              
-            ],
+                to: '/blog'
+              }
+            ]
           },
           {
             title: '更多',
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/heinfy',
-              },
-            ],
-          },
+                href: 'https://github.com/heinfy'
+              }
+            ]
+          }
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} 海因飞， 基于 Docusaurus 构建`,
+        copyright: `Copyright © ${new Date().getFullYear()} heinfy， 基于 Docusaurus 构建`
       },
       prism: {
         theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
-      },
-    }),
+        darkTheme: darkCodeTheme
+      }
+    })
 };
 
 module.exports = config;
