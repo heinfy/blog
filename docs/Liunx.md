@@ -6,8 +6,7 @@ tags:
   - Liunx
 hide_title: true
 sidebar_position: 1
-description: 认识 Liunx
 custom_edit_url: null
 ---
 
-# Liunx
+- [Centos 6/7 防火墙设置与开放端口](https://www.jianshu.com/p/144023ced33c)
