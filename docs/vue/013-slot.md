@@ -1,4 +1,14 @@
-# slot
+---
+id: vue_013
+title: vue的slot
+keywords: [Vue]
+tags:
+  - Vue
+hide_title: true
+sidebar_position: 13
+description: vue的slot
+custom_edit_url: null
+---
 
 插槽就是在子组件中定义一个“占位符”，父组件中将指定模板插入到该“占位符”中；作用域插槽更多的功能就是在子组件中可以通过 `scope` 属性将子组件中的属性反馈到父组件。
 

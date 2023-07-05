@@ -10,7 +10,7 @@ description: 认识 Vue
 custom_edit_url: null
 ---
 
-# Vue
+### 常用链接
 
 - [Vue 官网](https://cn.vuejs.org/)
 - [Vue API 参考](https://cn.vuejs.org/api/)

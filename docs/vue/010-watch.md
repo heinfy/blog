@@ -1,6 +1,16 @@
-# watch
+---
+id: vue_010
+title: watch
+keywords: [Vue]
+tags:
+  - Vue
+hide_title: true
+sidebar_position: 10
+description: watch
+custom_edit_url: null
+---
 
-```vue
+```html
 <template>
   <div>{{ testWatch }}</div>
 </template>

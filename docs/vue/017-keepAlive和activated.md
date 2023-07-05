@@ -1,8 +1,14 @@
-# keepAlive 和 activated
-
-- [vue 中前进刷新、后退缓存用户浏览数据和浏览位置的实践](https://juejin.im/post/5b2ce07ce51d45588a7dbf76)
-
-- [keep-alive 组件级缓存](https://www.cnblogs.com/yf-html/p/9353627.html)
+---
+id: vue_017
+title: keepAlive 和 activated
+keywords: [Vue]
+tags:
+  - Vue
+hide_title: true
+sidebar_position: 17
+description: Vue 的 keepAlive 和 activated
+custom_edit_url: null
+---
 
 `<keep-alive>` 包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们。它自身不会渲染一个 DOM 元素，也不会出现在父组件链中，不会渲染到 DOM 树中。
 
@@ -33,3 +39,7 @@
 
 第一次进入：`beforeRouterEnter -> created -> … -> activated-> … -> deactivated`
 后续进入时：`beforeRouterEnter -> activated -> deactivated`
+
+- [vue 中前进刷新、后退缓存用户浏览数据和浏览位置的实践](https://juejin.im/post/5b2ce07ce51d45588a7dbf76)
+
+- [keep-alive 组件级缓存](https://www.cnblogs.com/yf-html/p/9353627.html)
