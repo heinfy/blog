@@ -99,6 +99,12 @@ const config = {
           {
             type: 'docSidebar',
             position: 'left',
+            sidebarId: 'ebook',
+            label: '电子书'
+          },
+          {
+            type: 'docSidebar',
+            position: 'left',
             sidebarId: 'liunx',
             label: 'Liunx'
           },
