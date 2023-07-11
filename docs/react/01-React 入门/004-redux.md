@@ -1,4 +1,14 @@
-# redux
+---
+id: rc01_004
+title: redux
+description: redux
+keywords: [React]
+tags:
+  - React
+hide_title: true
+sidebar_position: 4
+custom_edit_url: null
+---
 
 作用：集中式管理 react 应用中多个组件共享的状态。
 

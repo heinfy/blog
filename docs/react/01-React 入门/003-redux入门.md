@@ -1,4 +1,14 @@
-# redux 入门
+---
+id: rc01_003
+title: redux 入门
+description: redux 入门
+keywords: [React]
+tags:
+  - React
+hide_title: true
+sidebar_position: 3
+custom_edit_url: null
+---
 
 [Redux 中文文档](https://www.redux.org.cn/)
 
