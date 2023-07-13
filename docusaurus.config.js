@@ -105,6 +105,12 @@ const config = {
           {
             type: 'docSidebar',
             position: 'left',
+            sidebarId: 'mst',
+            label: '面试题'
+          },
+          {
+            type: 'docSidebar',
+            position: 'left',
             sidebarId: 'liunx',
             label: 'Liunx'
           },
