@@ -51,7 +51,7 @@ module.exports = {
 
 ### 创建 SvgIcon 组件
 
-```vue
+```html
 <!-- src\components\SvgIcon\index.vue -->
 <template>
   <div
@@ -129,6 +129,14 @@ export default {
 
 ### 在 vue 中生成 icon
 
+```bash
+src
+  ├─icons
+  │  │  index.js
+  │  └─svg
+  │     button.svg
+```
+
 ```js
 // src\icons\index.js
 import Vue from 'vue';
@@ -195,7 +203,7 @@ module.exports = {
 
 ### 创建 SvgIcon 组件
 
-```vue
+```html
 <!-- components\SvgIcon.vue -->
 <template>
   <client-only>
@@ -276,6 +284,13 @@ export default {
 
 ### 在 plugins 中生成 icon 插件
 
+```bash
+aseets
+  └─icons
+      │    button.svg
+      │    cascader.svg
+```
+
 ```js
 // plugins\svg-icon.js
 import Vue from 'vue';
@@ -283,7 +298,7 @@ import SvgIcon from '@/components/SvgIcon'; // Nuxt 默认@指向根目录
 
 // 注册组件
 Vue.component('svg-icon', SvgIcon);
-//预请求svg组件(通过之前的svg-sprite-loader加载)
+// 预请求svg组件(通过之前的svg-sprite-loader加载)
 const req = require.context('@/assets/icons/svg', false, /\.svg$/);
 const requireAll = requireContext => requireContext.keys().map(requireContext);
 requireAll(req);
@@ -307,7 +322,7 @@ module.exports = {
 
 ### 使用
 
-```vue
+```html
 <svg-icon icon-class="component" />
 <svg-icon icon-class="button" />
 <svg-icon icon-class="input" />
