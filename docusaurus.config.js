@@ -71,12 +71,12 @@ const config = {
         },
         items: [
           // cli 自带的侧边栏，我把文档放到 docs/docusaurus/
-          {
+          /* {
             type: 'docSidebar',
             sidebarId: 'docusaurus',
             position: 'left',
             label: 'docusaurus'
-          },
+          }, */
           // 导航栏链接到侧边栏
           {
             type: 'docSidebar',
@@ -99,6 +99,12 @@ const config = {
           {
             type: 'docSidebar',
             position: 'left',
+            sidebarId: 'typescript',
+            label: 'Typescript'
+          },
+          {
+            type: 'docSidebar',
+            position: 'left',
             sidebarId: 'ebook',
             label: '电子书'
           },
@@ -114,7 +120,7 @@ const config = {
             sidebarId: 'liunx',
             label: 'Liunx'
           },
-          { to: '/blog', label: '博客', position: 'left' },
+          // { to: '/blog', label: '博客', position: 'left' },
           {
             href: 'https://github.com/heinfy',
             label: 'GitHub',
