@@ -1,5 +1,7 @@
 # React.useReducer
 
+useReducer 是 React 中的一个钩子函数，用于管理和处理组件的状态逻辑，特别适用于复杂的状态管理场景。它的工作方式类似于 Redux 中的 reducer，通过指定一个状态更新函数（reducer）来更新组件的状态。这个钩子函数可以将状态和状态更新逻辑分离，使代码更加清晰和可维护。
+
 ## 介绍
 
 ```js
@@ -8,7 +10,7 @@ const [state, dispatch] = useReducer(reducer, initialArg, init);
 // reducer = (state, action) => newState
 ```
 
-使用 useReducer 还能给那些会触发深更新的组件做性能优化，因为你可以**向子组件传递 dispatch 而不是回调函数。**
+使用 `useReducer` 还能给那些会触发深更新的组件做性能优化，因为可以**向子组件传递 dispatch 而不是回调函数。**
 
 1. 指定初始 state
 
@@ -28,8 +30,9 @@ const [state, dispatch] = useReducer(reducer, { count: initialCount });
 ```jsx
 import React, { useReducer } from 'react';
 
+// 该方法将返回 state 的 初始值
 function init(initialCount) {
-  return { count: initialCount };
+  return { count: initialCount + 100 };
 }
 
 function reducer(state, action) {

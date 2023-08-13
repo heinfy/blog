@@ -1,8 +1,7 @@
 # React.useMemo
 
-- [useMemo](https://zh-hans.reactjs.org/docs/hooks-reference.html#usememo)
-  React.memo 不足： 在使用 React.memo 进行性能优化时，只能进行组件间的 props 优化，但是对一个庞大的组件来说，除了 props，还有存在组件内部的 state，这时需要进行组件内部的属性进行优化，React.memo 就显的不足。而 React.useMemo 就是来解决这个问题——进行细粒度性能优化。
-- [React.memo 与 useMemo](https://zhuanlan.zhihu.com/p/105940433)
+- `React.memo` 不足： 在使用 `React.memo` 进行性能优化时，只能进行组件间的 props 优化，但是对一个庞大的组件来说，除了 props，还有存在组件内部的 state，这时需要进行组件内部的属性进行优化，React.memo 就显的不足。
+- `React.useMemo` 主要用来解决使用 `React hooks` 产生的无用渲染的性能问题。
 
 ## 基本用法
 

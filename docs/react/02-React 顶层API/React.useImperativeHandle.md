@@ -6,9 +6,70 @@
 useImperativeHandle(ref, createHandle, [deps]);
 ```
 
-useImperativeHandle 可以让你在使用 ref 时自定义暴露给父组件的实例值。在大多数情况下，应当避免使用 ref 这样的命令式代码。useImperativeHandle 应当与 forwardRef 一起使用：
+- ref：接受 useRef 或 forwardRef 传递过来的 ref；
+- createHandle：处理函数，返回值作为暴露给父组件的 ref 对象；
+- deps：依赖项，依赖项如果更改，会形成新的 ref 对象。
 
-看一个 forwardRef 案例：
+`useImperativeHandle` 是 `React` 中的一个钩子函数，用于向父组件暴露子组件的某些功能，允许在父组件中调用子组件的特定方法或访问子组件的 DOM 节点。
+
+通常情况下，React 鼓励通过 props 和回调函数来实现组件间的通信，但在某些情况下，可能需要直接操作子组件，这时可以使用 useImperativeHandle。
+
+## useImperativeHandle 和 forwardRef 联用
+
+### 案例一
+
+父组件能够调用子组件的方法来改变子组件的状态：
+
+```jsx
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
+
+// 子组件
+const ChildComponent = forwardRef((props, ref) => {
+  const [count, setCount] = useState(0);
+
+  // 暴露给父组件的方法
+  useImperativeHandle(ref, () => ({
+    increment: () => {
+      setCount(count + 1);
+    },
+    getCount: () => {
+      return count;
+    }
+  }));
+
+  return (
+    <div>
+      <p>子组件的值: {count}</p>
+    </div>
+  );
+});
+
+// 父组件
+function ParentComponent() {
+  const childRef = React.createRef();
+
+  const handleIncrement = () => {
+    childRef.current.increment();
+  };
+
+  const handleGetCount = () => {
+    const count = childRef.current.getCount();
+    console.log('通过 ref 获取子组件的值:', count);
+  };
+
+  return (
+    <div>
+      <ChildComponent ref={childRef} />
+      <button onClick={handleIncrement}>父组件调用子组件的方法 count + 1</button>
+      <button onClick={handleGetCount}>父组件调用子组件的方法获取 count 值</button>
+    </div>
+  );
+}
+
+export default ParentComponent;
+```
+
+### 案例二
 
 ```js
 import React, { useRef, useEffect, forwardRef } from 'react';
