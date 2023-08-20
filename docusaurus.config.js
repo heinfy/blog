@@ -149,7 +149,7 @@ const config = {
             items: [
               {
                 label: '我的主页',
-                href: 'https://github.com/heinfy'
+                href: 'https://heinfy.top'
               },
               {
                 label: 'vue-app',
@@ -162,7 +162,7 @@ const config = {
             items: [
               {
                 label: '我的简历',
-                href: 'https://resume.github.com/'
+                href: 'https://resume.heinfy.top/'
               }
             ]
           }
