@@ -134,9 +134,13 @@ const config = {
           {
             title: '文档',
             items: [
-              {
+              /* {
                 label: 'Tutorial',
                 to: '/docs/intro'
+              }, */
+              {
+                label: 'GitHub',
+                href: 'https://github.com/heinfy'
               }
             ]
           },
@@ -144,8 +148,12 @@ const config = {
             title: '博客',
             items: [
               {
-                label: '博客',
-                to: '/blog'
+                label: '我的主页',
+                href: 'https://github.com/heinfy'
+              },
+              {
+                label: 'vue-app',
+                href: 'https://heinfy.github.io/vue-app/'
               }
             ]
           },
@@ -153,8 +161,8 @@ const config = {
             title: '更多',
             items: [
               {
-                label: 'GitHub',
-                href: 'https://github.com/heinfy'
+                label: '我的简历',
+                href: 'https://resume.github.com/'
               }
             ]
           }
