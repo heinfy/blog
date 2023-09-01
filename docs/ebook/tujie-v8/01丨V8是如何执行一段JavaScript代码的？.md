@@ -1,5 +1,5 @@
 ---
-id: v8_002
+id: v8_001
 title: 01丨V8是如何执行一段JavaScript代码的？
 description: 本节的目的是对 V8 做一个宏观的、全面的介绍。
 keywords: [v8]

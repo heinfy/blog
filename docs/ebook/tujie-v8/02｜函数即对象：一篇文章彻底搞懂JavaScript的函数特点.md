@@ -1,5 +1,5 @@
 ---
-id: v8_003
+id: v8_002
 title: 02｜函数即对象：一篇文章彻底搞懂JavaScript的函数特点
 description: JavaScript 中的函数称为一等公民
 tags:
