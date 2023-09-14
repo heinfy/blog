@@ -1,6 +1,6 @@
 ---
 id: p_react
-title: React
+title: React 相关链接
 keywords: [React]
 tags:
   - React
@@ -26,3 +26,7 @@ custom_edit_url: null
 - [ahooks](https://ahooks.js.org/)
 - [Vercel 部署个人博客](https://cloud.tencent.com/developer/article/2200767)
 - [在 Docusaurus v2 中使用 Algolia DocSearch 搜索功能](https://didilinkin.cn/blog/algoliasearch/)
+- [异步渲染之更新](https://zh-hans.reactjs.org/blog/2018/03/27/update-on-async-rendering.html)
+- [React 新旧生命周期的思考理解](https://zhuanlan.zhihu.com/p/65124686?utm_source=qq)
+- [React Hooks 免费视频教程](https://www.bilibili.com/video/BV1y4411Q7yH)
+- [React Hooks 免费视频教程(共 11 集)](http://jspang.com/detailed?id=50)

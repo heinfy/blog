@@ -1,6 +1,6 @@
 ---
 id: rc01_004
-title: redux
+title: 004-redux方法
 description: redux
 keywords: [React]
 tags:
@@ -10,11 +10,9 @@ sidebar_position: 4
 custom_edit_url: null
 ---
 
-作用：集中式管理 react 应用中多个组件共享的状态。
+## 核心 api
 
-## 1.核心 api
-
-### 1.1.createStore()
+### createStore()
 
 作用：创建包含指定 reducer 的 store 对象
 
@@ -24,15 +22,11 @@ import reducer from './reducer';
 const store = createStore(reducer);
 ```
 
-### 1.2.store
+### store
 
-作用：redux 库最核心的管理对象
-
-它内部维护着：state 和 reducer
+作用：redux 库最核心的管理对象，它内部维护着：state 和 reducer
 
 核心方法：`getState()`、`dispatch(action)`、`subscribe(listener)`
-
-编码：
 
 ```js
 store.getState();
@@ -40,11 +34,7 @@ store.dispatch({ type: 'INCREMENT', number });
 store.subscribe(render);
 ```
 
-### 1.3.applyMiddleware()
-
-作用：应用上基于 redux 的中间件(插件库)
-
-编码：
+### applyMiddleware()
 
 ```js
 import { createStore, applyMiddleware } from 'redux';
@@ -55,11 +45,9 @@ const store = createStore(
 );
 ```
 
-### 1.4.combineReducers()
+### combineReducers()
 
 作用：合并多个 reducer 函数
-
-编码：
 
 ```js
 export default combineReducers({
@@ -69,18 +57,14 @@ export default combineReducers({
 });
 ```
 
-## 2.redux 的三个核心概念
+## redux 的三个核心概念
 
-### 2.1.action
+### action
 
-作用：标识要执行行为的对象
-
-包含 2 个方面的属性
+作用：标识要执行行为的对象。包含 2 个方面的属性：
 
 - type：标识属性, 值为字符串, 唯一, 必要属性
 - XXX：数据属性，值类型任意，可选属性
-
-例子：
 
 ```js
 const action = {
@@ -89,17 +73,14 @@ const action = {
 };
 ```
 
-Action Creator(创建 Action 的工厂函数)
-
 ```js
+// 创建 Action 的工厂函数
 const increment = number => ({ type: 'INCREMENT', data: number });
 ```
 
-### 2.2.reducer
+### reducer
 
 作用：根据老的 state 和 action, 产生新的 state 的纯函数
-
-样例：
 
 ```js
 export default function counter(state = 0, action) {
@@ -114,11 +95,9 @@ export default function counter(state = 0, action) {
 }
 ```
 
-注意：返回一个新的状态，不要修改原来的状态
+注意：**返回一个新的状态，不要修改原来的状态**
 
-### 2.3.store
-
-将 state,action 与 reducer 联系在一起的对象
+### store
 
 ```js
 import { createStore } from 'redux';
@@ -126,88 +105,13 @@ import reducer from './reducer';
 const store = createStore(reducer);
 ```
 
-此对象的功能：
+store 上的方法
 
-- getState(): 得到 state
-- dispatch(action): 分发 action, 触发 reducer 调用, 产生新的 state
-- subscribe(listener): 注册监听, 当产生了新的 state 时, 自动调用
+- `getState()`: 得到 state
+- `dispatch(action)`: 分发 action, 触发 reducer 调用, 产生新的 state
+- `subscribe(listener)`: 注册监听, 当产生了新的 state 时, 自动调用
 
-## 3.count 计数案例
-
-### 3.1.react 实现计数
-
-```jsx
-import React, { Component } from 'react';
-export default class App extends Component {
-  state = {
-    count: 0 // 定义变量
-  };
-
-  constructor(props) {
-    super(props);
-    // 创建ref，将其赋值给一个变量，通过ref挂载在dom节点或组件上，该ref的current属性将能拿到dom节点或组件的实例
-    this.numberRef = React.createRef();
-  }
-
-  increment = () => {
-    // 同步加
-    const number = this.numberRef.current.value * 1;
-    this.setState(state => ({ count: state.count + number }));
-  };
-
-  decrement = () => {
-    // 同步减
-    const number = this.numberRef.current.value * 1;
-    this.setState(state => ({ count: state.count - number }));
-  };
-
-  incrementIfOdd = () => {
-    // 奇数加
-    const number = this.numberRef.current.value * 1;
-    if (this.state.count % 2 === 1) {
-      this.setState(state => ({ count: state.count + number }));
-    }
-  };
-
-  incrementAsync = () => {
-    // 异步加
-    const number = this.numberRef.current.value * 1;
-    setTimeout(() => {
-      this.setState(state => ({ count: state.count + number }));
-    }, 1000);
-  };
-
-  render() {
-    const count = this.state.count;
-    return (
-      <div>
-        <p>click {count} times</p>
-        <div>
-          <select ref={this.numberRef}>
-            <option value='1'>1</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-          </select>{' '}
-          &nbsp;&nbsp;
-          <button onClick={this.increment}>+</button>&nbsp;&nbsp;
-          <button onClick={this.decrement}>-</button>&nbsp;&nbsp;
-          <button onClick={this.incrementIfOdd}>increment if odd</button>
-          &nbsp;&nbsp;
-          <button onClick={this.incrementAsync}>increment async</button>
-        </div>
-      </div>
-    );
-  }
-}
-```
-
-## 3.2.react_redux 版本
-
-![react-redux耦合](assets/react-redux%E8%80%A6%E5%90%88.gif)
-
-实现思路：
-
-![react-redux](assets/react-redux.png)
+## 计数案例
 
 ```js
 // index.js
@@ -347,63 +251,39 @@ export default class App extends Component {
 }
 ```
 
-缺点：
+![react-redux耦合](assets/react-redux%E8%80%A6%E5%90%88.gif)
 
-1. redux 与 react 组件的代码耦合度太高
+实现思路：
 
-2. 编码不够简洁
+![react-redux](assets/react-redux.png)
 
-## 4.react-redux 库
+缺点：redux 与 react 组件的代码耦合度太高，编码不够简洁
 
-一个 react 插件库，专门用来简化 react 应用中使用 redux。
+## react-redux 库
 
 React-Redux 将所有组件分成两大类：
 
-- UI 组件
-  a. 只负责 UI 的呈现，不带有任何业务逻辑
-  b. 通过 props 接收数据(一般数据和函数)
-  c. 不使用任何 Redux 的 API
-  d. 一般保存在 components 文件夹下
-- 容器组件
-  a. 负责管理数据和业务逻辑，不负责 UI 的呈现
-  b. 使用 Redux 的 API
-  c. 一般保存在 containers 文件夹下
-
 ![react-redux库](assets/react-redux%E5%BA%93.png)
 
-### 4.1.相关 api
-
-**Provider**：
+### 相关 api
 
 ```jsx
-// 让所有组件都可以得到 state 数据
+// Provider让所有组件都可以得到 state 数据
 <Provider store={store}>
   <App />
-</Provider>
-```
+</Provider>;
 
-**connect()**：
-
-```js
-// 用于包装 UI 组件生成容器组件
+// connect 用于包装 UI 组件生成容器组件
 connect(mapStateToprops, mapDispatchToProps)(Counter);
-```
 
-**mapStateToprops()**
-
-```js
-// 函数: 将 state 数据转换为 UI 组件的标签属性
+// mapStateToprops函数: 将 state 数据转换为 UI 组件的标签属性
 function mapStateToProps(state) {
   return {
     count: state
   };
 }
-```
 
-**mapDispatchToProps**：
-
-```js
-// 函数: 将分发 action 的函数转换为 UI 组件的标签属性
+// mapDispatchToProps函数: 将分发 action 的函数转换为 UI 组件的标签属性
 function mapDispatchToProps(dispatch) {
   return {
     increment: number => dispatch(increment(number)),
@@ -417,22 +297,13 @@ const mapDispatchToProps = {
 };
 ```
 
-### 4.2.react-redux 版本
+### react-redux 使用
 
-```hash
-npm install --save react-redux
-
-redux/action-types.js 不变
-redux/actions.js 不变
-redux/reducers.js 不变
-redux/store.js 不变
-```
-
-```JS
+```js
 // containers/App.js
-import {connect} from 'react-redux'
-import Counter from '../components/Counter'
-import {increment, decrement} from '../redux/actions'
+import { connect } from 'react-redux';
+import Counter from '../components/Counter';
+import { increment, decrement } from '../redux/actions';
 
 /*
 // 指定向Counter传入哪些一般属性(属性值的来源就是store中的state)
@@ -451,10 +322,7 @@ export default connect(
   mapDispatchToProps
 )(Counter)*/
 
-export default connect(
-  state => ({count: state}),
-  {increment, decrement},
-)(Counter)
+export default connect(state => ({ count: state }), { increment, decrement })(Counter);
 ```
 
 ```jsx
@@ -462,11 +330,7 @@ export default connect(
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-/*
-UI组件
-  主要做显示与与用户交互
-  代码中没有任何redux相关的代码
- */
+// UI组件，主要做显示与与用户交互，代码中没有任何redux相关的代码
 export default class Counter extends Component {
   static propTypes = {
     count: PropTypes.number.isRequired,
@@ -542,9 +406,7 @@ ReactDOM.render(
 );
 ```
 
-## 5.redux-thunk 异步中间件
-
-`npm install --save redux-thunk`
+## redux-thunk
 
 ```js
 // redux/store.js
@@ -557,9 +419,7 @@ export default createStore(reducer, applyMiddleware(thunk));
 
 ```js
 // redux/actions.js
-/*
-  异步增加的异步 action
- */
+// 异步增加的异步 action
 export const incrementAsync = function (number) {
   // 返回一个带 dispatch 参数的函数
   return dispatch => {
@@ -577,11 +437,6 @@ export const incrementAsync = function (number) {
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-/*
-UI组件
-  主要做显示与与用户交互
-  代码中没有任何redux相关的代码
- */
 export default class Counter extends Component {
   static propTypes = {
     count: PropTypes.number.isRequired,
@@ -651,11 +506,9 @@ import { increment, decrement, incrementAsync } from '../redux/actions';
 export default connect(state => ({ count: state }), { increment, decrement, incrementAsync })(Counter);
 ```
 
-## 6.redux 调试工具
+## redux 调试工具
 
-在`chrome`安装`redux-devtool`插件
-
-项目中下载依赖：`npm install --save-dev redux-devtools-extension`
+在`chrome`安装`redux-devtool`插件；项目下载依赖：`npm install --save-dev redux-devtools-extension`。
 
 ```js
 // // redux/store.js
