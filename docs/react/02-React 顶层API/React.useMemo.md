@@ -1,6 +1,8 @@
 # React.useMemo
 
-- `React.memo` 不足： 在使用 `React.memo` 进行性能优化时，只能进行组件间的 props 优化，但是对一个庞大的组件来说，除了 props，还有存在组件内部的 state，这时需要进行组件内部的属性进行优化，React.memo 就显的不足。
+- `React.memo` 不足： 在使用 `React.memo` 进行性能优化时，只能进行组件间的 props 优化，但是对一个庞
+  大的组件来说，除了 props，还有存在组件内部的 state，这时需要进行组件内部的属性进行优化，React.memo
+  就显的不足。
 - `React.useMemo` 主要用来解决使用 `React hooks` 产生的无用渲染的性能问题。
 
 ## 基本用法
@@ -29,7 +31,8 @@ export default () => {
 
   return (
     <div>
-      <button onClick={() => setCount1(count1 + 1)}>count1+1</button> <button onClick={() => setCount2(count2 + 1)}>count2+1</button>{' '}
+      <button onClick={() => setCount1(count1 + 1)}>count1+1</button>{' '}
+      <button onClick={() => setCount2(count2 + 1)}>count2+1</button>{' '}
       <button onClick={() => setTotal(count2 + count1)}>计算total</button>
       <p>
         count1={count1}；count2={count2}；total={total}

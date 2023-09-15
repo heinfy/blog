@@ -1,11 +1,13 @@
-# useInsertionEffect
+# React.useInsertionEffect
 
 **useInsertionEffect：** 与 useEffect 一样，但它在所有 DOM 突变之前同步触发。
 
 **注意：**
 
-- useInsertionEffect 应限于 css-in-js 库作者使用。在实际的项目中优先考虑使用 useEffect 或 useLayoutEffect 来替代；
-- 这个钩子是为了解决 `CSS-in-JS` 在渲染中注入样式的性能问题而出现的，所以在我们日常的开发中并不会用到这个钩子，但我们要知道如何去使用它。
+- useInsertionEffect 应限于 css-in-js 库作者使用。在实际的项目中优先考虑使用 useEffect 或
+  useLayoutEffect 来替代；
+- 这个钩子是为了解决 `CSS-in-JS` 在渲染中注入样式的性能问题而出现的，所以在我们日常的开发中并不会用
+  到这个钩子，但我们要知道如何去使用它。
 
 **基本使用：**
 
@@ -43,7 +45,8 @@ export default Index;
 
 ![img](assets/0faddc177bb74af39f5c809f999ed45ctplv-k3u1fbpfcp-jj-mark1890000q75.avis)
 
-**执行顺序：** 在目前的版本中，React 官方共提供三种有关副作用的钩子，分别是 useEffect、useLayoutEffect 和 useInsertionEffect，我们一起来看看三者的执行顺序：
+**执行顺序：** 在目前的版本中，React 官方共提供三种有关副作用的钩子，分别是
+useEffect、useLayoutEffect 和 useInsertionEffect，我们一起来看看三者的执行顺序：
 
 ```tsx
 const Index: React.FC<any> = () => {

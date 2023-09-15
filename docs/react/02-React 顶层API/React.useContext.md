@@ -1,8 +1,7 @@
 # React.useContext
 
-- [useContext](https://zh-hans.reactjs.org/docs/hooks-reference.html#usecontext)
-
-在 React 库中，使用 React.createContext() 方法来创建一个上下文（context），用于在组件树中进行数据传递。
+在 React 库中，使用 React.createContext() 方法来创建一个上下文（context），用于在组件树中进行数据传
+递。
 
 > **类组件只能通过 Consumer 接受数据**
 >
@@ -74,3 +73,7 @@ const GrandSon3 = () => {
   );
 };
 ```
+
+## 链接
+
+- [useContext](https://zh-hans.reactjs.org/docs/hooks-reference.html#usecontext)

@@ -1,13 +1,13 @@
 # React.memo
 
-- [React.memo](https://zh-hans.reactjs.org/docs/react-api.html#reactmemo)
-- [React.memo 与 useMemo](https://zhuanlan.zhihu.com/p/105940433)
-
 ## 用法
 
-`React.memo` 的作用：如果你的组件在相同 props 的情况下渲染相同的结果，那么你可以通过将其包装在 React.memo 中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。这意味着在这种情况下，React 将跳过渲染组件的操作并直接复用最近一次渲染的结果。
+`React.memo` 的作用：如果你的组件在相同 props 的情况下渲染相同的结果，那么你可以通过将其包装在
+`React.memo` 中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。这意味着在这种情况下，React
+将跳过渲染组件的操作并直接复用最近一次渲染的结果。
 
-对于`Function Component`，react 提供了 `React.memo` 这个 HOC，与 `class component` 的 `PureComponent` 相似。
+对于`Function Component`，react 提供了 `React.memo` 这个 HOC，与 `class component` 的
+`PureComponent` 相似。
 
 `React.memo()` 的用法
 
@@ -26,7 +26,8 @@ const App = React.memo(
 );
 ```
 
-注意： React.memo 仅检查 props 变更。如果函数组件被 React.memo 包裹，且其实现中拥有 useState，useReducer 或 useContext 的 Hook，当 context 发生变化时，它仍会重新渲染。
+注意： React.memo 仅检查 props 变更。如果函数组件被 React.memo 包裹，且其实现中拥有
+useState，useReducer 或 useContext 的 Hook，当 context 发生变化时，它仍会重新渲染。
 
 测试案例：
 
@@ -45,7 +46,8 @@ export default (props = {}) => {
 
   return (
     <div>
-      <button onClick={() => setCount1(count1 + 1)}>count1+1</button> <button onClick={() => setCount2(count2 + 1)}>count2+1</button>{' '}
+      <button onClick={() => setCount1(count1 + 1)}>count1+1</button>{' '}
+      <button onClick={() => setCount2(count2 + 1)}>count2+1</button>{' '}
       <button onClick={() => setTotal(count2 + count1)}>计算total</button>
       <p>
         count1={count1}；count2={count2}；total={total}
@@ -98,12 +100,14 @@ const ChildMemo = memo(props => {
 }, isEqual);
 ```
 
-结果：
+点击 count1 和 count2 加一，Child 组件跟着渲染，点击 计算 total 按钮，Child ChildMemo 都会渲染。结果
+如图：
 
 ![memo](assets/memo.gif)
 
-点击 count1 和 count2 加一，Child 组件跟着渲染，点击 计算 total 按钮，Child ChildMemo 都会渲染
-
-## 总结
-
 `React.memo` 就是对 `ShouldUpdateCompontent` 的 props 的优化。
+
+## 链接
+
+- [React.memo](https://zh-hans.reactjs.org/docs/react-api.html#reactmemo)
+- [React.memo 与 useMemo](https://zhuanlan.zhihu.com/p/105940433)

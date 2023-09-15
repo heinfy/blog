@@ -10,9 +10,11 @@ useImperativeHandle(ref, createHandle, [deps]);
 - createHandle：处理函数，返回值作为暴露给父组件的 ref 对象；
 - deps：依赖项，依赖项如果更改，会形成新的 ref 对象。
 
-`useImperativeHandle` 是 `React` 中的一个钩子函数，用于向父组件暴露子组件的某些功能，允许在父组件中调用子组件的特定方法或访问子组件的 DOM 节点。
+`useImperativeHandle` 是 `React` 中的一个钩子函数，用于向父组件暴露子组件的某些功能，允许在父组件中
+调用子组件的特定方法或访问子组件的 DOM 节点。
 
-通常情况下，React 鼓励通过 props 和回调函数来实现组件间的通信，但在某些情况下，可能需要直接操作子组件，这时可以使用 useImperativeHandle。
+通常情况下，React 鼓励通过 props 和回调函数来实现组件间的通信，但在某些情况下，可能需要直接操作子组
+件，这时可以使用 useImperativeHandle。
 
 ## useImperativeHandle 和 forwardRef 联用
 
@@ -147,4 +149,5 @@ const App = () => {
 export default App;
 ```
 
-这个原理就是: 我们执行的这个 focus 本质是 useImperativeHandle 里面的 focus,然后我们在子组件里面再定义一个 useRef,在子组件把 inputRef 赋给 input,相当于子组件内部先获取了这个 focus,然后在父组件再调用。
+这个原理就是: 我们执行的这个 focus 本质是 useImperativeHandle 里面的 focus,然后我们在子组件里面再定
+义一个 useRef,在子组件把 inputRef 赋给 input,相当于子组件内部先获取了这个 focus,然后在父组件再调用。
