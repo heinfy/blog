@@ -1,12 +1,12 @@
 ---
-id: vue_016
-title: Router 家族
+id: beforeRoute
+title: beforeRoute
 keywords: [Vue]
 tags:
   - Vue
 hide_title: true
-sidebar_position: 16
-description: Vue 的 Router 家族
+sidebar_position: 1
+description: Vue 的 beforeRoute
 custom_edit_url: null
 ---
 
@@ -25,6 +25,8 @@ custom_edit_url: null
 进入一个页面触发的函数：
 
 `beforeEach => beforeRouteEnter => beforeResolve => afterEach => created => mounted => beforeRouteLeave`
+
+## 链接
 
 - [Vue 导航守卫 beforeRouteEnter，beforeRouteUpdate，beforeRouteLeave 详解](https://blog.csdn.net/qq_43196107/article/details/90235110)
 - [vue 组件独享守卫钩子函数参数详解（beforeRouteEnter、beforeRouteUpdate、beforeRouteLeave）](https://www.cnblogs.com/lhl66/p/9195901.html)

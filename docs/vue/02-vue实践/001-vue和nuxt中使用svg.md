@@ -1,11 +1,11 @@
 ---
-id: vue_018
+id: svg
 title: vue和nuxt中使用svg
 keywords: [Vue]
 tags:
   - Vue
 hide_title: true
-sidebar_position: 18
+sidebar_position: 1
 description: vue和nuxt中使用svg
 custom_edit_url: null
 ---
@@ -51,7 +51,7 @@ module.exports = {
 
 ### 创建 SvgIcon 组件
 
-```html
+```vue
 <!-- src\components\SvgIcon\index.vue -->
 <template>
   <div
@@ -203,7 +203,7 @@ module.exports = {
 
 ### 创建 SvgIcon 组件
 
-```html
+```vue
 <!-- components\SvgIcon.vue -->
 <template>
   <client-only>

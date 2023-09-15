@@ -1,16 +1,17 @@
 ---
-id: vue_013
-title: vue的slot
+id: slot
+title: 插槽
 keywords: [Vue]
 tags:
   - Vue
 hide_title: true
-sidebar_position: 13
+sidebar_position: 6
 description: vue的slot
 custom_edit_url: null
 ---
 
-插槽就是在子组件中定义一个“占位符”，父组件中将指定模板插入到该“占位符”中；作用域插槽更多的功能就是在子组件中可以通过 `scope` 属性将子组件中的属性反馈到父组件。
+插槽就是在子组件中定义一个“占位符”，父组件中将指定模板插入到该“占位符”中；作用域插槽更多的功能就是在
+子组件中可以通过 `scope` 属性将子组件中的属性反馈到父组件。
 
 **在一个组件的定义中，只允许出现一次匿名插槽。**
 
@@ -31,7 +32,7 @@ custom_edit_url: null
 </template>
 ```
 
-```html
+```vue
 <my-template>
   <p>这是匿名插槽的内容</p>
 </my-template>
@@ -39,7 +40,7 @@ custom_edit_url: null
 
 - 具名插槽
 
-```html
+```vue
 <my-template>
   <p solt="slotname">这是具名插槽的内容</p>
 </my-template>
@@ -47,7 +48,8 @@ custom_edit_url: null
 
 - 作用域插槽
 
-> 1. 定义作用域插槽：在子组件中，使用 `slot` 定义插槽的时候，可以通过 **属性传值** 的形式，为插槽传递数据，例子：`<slot text="hello world"></slot>`
+> 1. 定义作用域插槽：在子组件中，使用 `slot` 定义插槽的时候，可以通过 **属性传值** 的形式，为插槽传
+>    递数据，例子：`<slot text="hello world"></slot>`
 > 2. 使用作用域插槽：**在父作用域中，通过定义 slot-scope="scope" 属性，接收并使用 插槽数据；**
 > 3. 注意：**同一组件中不同插槽的作用域，是独立的！**
 
@@ -139,4 +141,4 @@ export default {
 
 显示结果：
 
-![1578896047064](assets/1578896047064.png)
+![slot](assets/slot.png)
