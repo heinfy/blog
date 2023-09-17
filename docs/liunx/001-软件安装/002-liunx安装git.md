@@ -1,11 +1,10 @@
 ---
 id: git
-title: git
+title: 安装 git
 description: 安装 git
-keywords: [Liunx, git]
+keywords: [Liunx]
 tags:
   - Liunx
-  - git
 hide_title: true
 sidebar_position: 2
 custom_edit_url: null

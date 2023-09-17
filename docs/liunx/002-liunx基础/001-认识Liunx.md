@@ -1,5 +1,5 @@
 ---
-id: liunx_001
+id: 001
 title: Liunx 基础
 description: Liunx 基础
 keywords: [Liunx]

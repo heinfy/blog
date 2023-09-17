@@ -1,11 +1,10 @@
 ---
 id: nginx
-title: nginx
+title: 安装 nginx
 description: 安装 nginx
-keywords: [Liunx, nginx]
+keywords: [Liunx]
 tags:
   - Liunx
-  - nginx
 hide_title: true
 sidebar_position: 4
 custom_edit_url: null

@@ -1,11 +1,10 @@
 ---
 id: mysql
-title: mysql
+title: 安装 mysql
 description: 安装 mysql
-keywords: [Liunx, mysql]
+keywords: [Liunx]
 tags:
   - Liunx
-  - mysql
 hide_title: true
 sidebar_position: 3
 custom_edit_url: null

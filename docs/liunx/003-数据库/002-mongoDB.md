@@ -1,13 +1,12 @@
 ---
-id: liunx_004
+id: MongooDB
 title: MongooDB
 description: MongooDB
-keywords: [Liunx, MongooDB]
+keywords: [Liunx]
 tags:
   - Liunx
-  - MongooDB
 hide_title: true
-sidebar_position: 4
+sidebar_position: 2
 custom_edit_url: null
 ---
 
@@ -292,13 +291,17 @@ db.orders.find({user_id: user_id})
 ## 后台与数据库交互
 
 - 使用数据库的原生语言（例如 SQL）
-- 使用对象数据模型（Object Data Model，简称 ODM）或对象关系模型（Object Relational Model，简称 ORM）。 ODM / ORM 能将网站中的数据表示为 JavaScript 对象，然后将它们映射到底层数据库。一些 ORM 只适用某些特定数据库，还有一些是普遍适用的。
+- 使用对象数据模型（Object Data Model，简称 ODM）或对象关系模型（Object Relational Model，简称 ORM）
+  。 ODM / ORM 能将网站中的数据表示为 JavaScript 对象，然后将它们映射到底层数据库。一些 ORM 只适用某
+  些特定数据库，还有一些是普遍适用的。
 
 使用 SQL 或其它受到支持的查询语言才能达到最佳性能。
 
-ODM 通常慢一些，因为在对象和数据库格式之间存在一层用于映射的翻译代码，使它不一定会选用最高性能的数据库查询（尤其是普遍使用级别的 ODM，它必须在各类数据库功能方面做出更大的折衷）。
+ODM 通常慢一些，因为在对象和数据库格式之间存在一层用于映射的翻译代码，使它不一定会选用最高性能的数据
+库查询（尤其是普遍使用级别的 ODM，它必须在各类数据库功能方面做出更大的折衷）。
 
-使用 ORM 的好处是：程序员可以继续用 JavaScript 对象的思维而不用转向数据库语义的思维。 在（同一个或不同网站）使用不同数据库时尤为明显。使用 ORM 还可以更方便地对数据进行验证和检查。
+使用 ORM 的好处是：程序员可以继续用 JavaScript 对象的思维而不用转向数据库语义的思维。 在（同一个或不
+同网站）使用不同数据库时尤为明显。使用 ORM 还可以更方便地对数据进行验证和检查。
 
 ## Mongoose
 
@@ -310,17 +313,14 @@ Mongoose 的优点：
 - 可以对模型中的对象/文档进行验证
 - 数据可以通过类型转换为对象模型
 - 可以使用中间件来应用业务逻辑挂钩
-- 比 Node 原生的 MongoDB 驱动更容易
-  Mongoose 是最受欢迎的 ODM，选用 MongoDB 数据库时，它是一个合理的选择。
+- 比 Node 原生的 MongoDB 驱动更容易 Mongoose 是最受欢迎的 ODM，选用 MongoDB 数据库时，它是一个合理的
+  选择。
 
 新的对象：
 
-- Schema（模式对象）
-  — Schema 对象定义约束了数据库中的文档结构
-- Model
-  — Model 对象作为集合中的所有文件的表示，相当于 MondoDB 数据库中的集合 collection
-- Document
-  — Document 表示集合中的具体文档，相当于集合中的一个具体的文档
+- Schema（模式对象） — Schema 对象定义约束了数据库中的文档结构
+- Model — Model 对象作为集合中的所有文件的表示，相当于 MondoDB 数据库中的集合 collection
+- Document — Document 表示集合中的具体文档，相当于集合中的一个具体的文档
 
 ### mongoose 连接数据库
 
@@ -572,9 +572,11 @@ StuModel.findOne({}, (error, doc) => {
 
 NoSQL(NoSQL = Not Only SQL )，意即"不仅仅是 SQL"。
 
-NoSQL，指的是非关系型的数据库。NoSQL 有时也称作 Not Only SQL 的缩写，是对不同于传统的关系型数据库的数据库管理系统的统称。
+NoSQL，指的是非关系型的数据库。NoSQL 有时也称作 Not Only SQL 的缩写，是对不同于传统的关系型数据库的
+数据库管理系统的统称。
 
-NoSQL 用于超大规模数据的存储。（例如个人信息，社交网络，地理位置，用户生成的数据和用户操作日志）。这些类型的数据存储不需要固定的模式，无需多余操作就可以横向扩展。
+NoSQL 用于超大规模数据的存储。（例如个人信息，社交网络，地理位置，用户生成的数据和用户操作日志）。这
+些类型的数据存储不需要固定的模式，无需多余操作就可以横向扩展。
 
 ### 基本术语
 

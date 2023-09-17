@@ -1,11 +1,10 @@
 ---
-id: mysql_001
+id: mysql
 title: mysql 基础
 description: MySQL 基础
-keywords: [Liunx, MySQL]
+keywords: [Liunx]
 tags:
   - Liunx
-  - MySQL
 hide_title: true
 sidebar_position: 1
 custom_edit_url: null
@@ -245,7 +244,8 @@ select a.empno,a.ename,b.ename as '领导',b.empno as '领导编号' from emp a 
 
 外连接
 
-- 假设 A 表和 B 表进行连接，使用外连接的话，AB 两张表中有一张表是主表，一张表是副表，主要查询主表中的数据，捎带着查询副表，**当副表中的数据没雨和主表中的数据匹配上，副表自动模拟出 null 与之匹配。**
+- 假设 A 表和 B 表进行连接，使用外连接的话，AB 两张表中有一张表是主表，一张表是副表，主要查询主表中
+  的数据，捎带着查询副表，**当副表中的数据没雨和主表中的数据匹配上，副表自动模拟出 null 与之匹配。**
 - 外连接的特点：**主表中的数据无条件的全部查询出来。**
 
 ```sql
@@ -486,9 +486,8 @@ engine=InnoDB DEFAULT CHARTSET=utf8;
 
 查看当前 MySQL 支持的存储引擎：`show engines \G`
 
-`MyISAM`: 不支持事务
-`InnoDB`: 支持事务，行级锁，支持外键、安全
-`MEMORY`: 不支持事务、数据容易丢失，数据和索引存在内存当中
+`MyISAM`: 不支持事务 `InnoDB`: 支持事务，行级锁，支持外键、安全 `MEMORY`: 不支持事务、数据容易丢失，
+数据和索引存在内存当中
 
 ## 事务
 
@@ -497,7 +496,8 @@ engine=InnoDB DEFAULT CHARTSET=utf8;
 - 原子性（Atomicity）: 整个事务中的所有操作，必须作为一个单元全部完成（或全部取消）。
 - 一致性（Consistency）: 在事务开始之前与结束之后，数据库都保持一致状态。
 - 隔离性(Isolation): 一个事务不会影响其他事务的运行。
-- 持久性(Durability): 在事务完成以后，该事务对数据库所作的更改将持久地保存在数据库之中，并不会被回滚。
+- 持久性(Durability): 在事务完成以后，该事务对数据库所作的更改将持久地保存在数据库之中，并不会被回滚
+  。
 
 事务的隔离：
 
