@@ -1,8 +1,20 @@
-# Observer (观察者)模式
+---
+id: sjms_005
+title: 05.Observer (观察者)模式
+description: Observer (观察者)模式
+keywords: [原型模式]
+tags:
+  - 面试题
+hide_title: true
+sidebar_position: 5
+custom_edit_url: null
+---
 
-Observer 是一种设计模式，其中，一个对象(称为 subject)维持一系列依赖于它(观察者)的对象，将有关状态的任何变更自动通知给它们。
+Observer 是一种设计模式，其中，一个对象(称为 subject)维持一系列依赖于它(观察者)的对象，将有关状态的
+任何变更自动通知给它们。
 
-当一个目标需要告诉观察者发生了什么有趣的事情，它会向观察者广播一个通知(可以包括与通知主题相关的特定数据)。
+当一个目标需要告诉观察者发生了什么有趣的事情，它会向观察者广播一个通知(可以包括与通知主题相关的特定
+数据)。
 
 当我们不再希望某个特定的观察者获得其注册目标发出的改变通知时，该目标可以将它从观察者列表中删除。
 
@@ -14,7 +26,8 @@ Observer 是一种设计模式，其中，一个对象(称为 subject)维持一�
 
 - `ConcreteSubject` (具体目标)：状态发生改变时，向 Observer 发出通知，储存 ConcreteObserver 的状态
 
-- `ConcreteObserver` (具体观察者)：存储一个指向 ConcreteSubject 的引用，实现 Observer 的更新接口，以使自身状态与目标的状态保持一致
+- `ConcreteObserver` (具体观察者)：存储一个指向 ConcreteSubject 的引用，实现 Observer 的更新接口，以
+  使自身状态与目标的状态保持一致
 
 来模拟一个目标可能拥有的一系列依赖 Observer：
 
@@ -248,11 +261,14 @@ pubsub.publish(topicName, 'Hello! are you still there?');
 
 接下来，假设我们有一个负责显示实时股票信息的 Web 应用程序。
 
-该应用程序有一个显示股票统计的网格和一个显示最后更新点的计数器。当数据模型改变时，应用程序需要更新网格和计数器。在这种情况下，目标(它将发布主题/通知)就是数据模型，观察者就是网格和计数器。
+该应用程序有一个显示股票统计的网格和一个显示最后更新点的计数器。当数据模型改变时，应用程序需要更新网
+格和计数器。在这种情况下，目标(它将发布主题/通知)就是数据模型，观察者就是网格和计数器。
 
 当观察者接收到 Model(模型)自身已经改变的通知时，则可以相应地更新自己。
 
-在我们的实现中，订阅者会监听 newDataAvailable 这个 topic 以探测是否有新的股票信息。如果新通知发布到这个 topic，它将触发 gridUpdate 向包含股票信息的网格添加一个新行。它还将更新一个 last updated 计数器来记录最后一次添加的数据。
+在我们的实现中，订阅者会监听 newDataAvailable 这个 topic 以探测是否有新的股票信息。如果新通知发布到
+这个 topic，它将触发 gridUpdate 向包含股票信息的网格添加一个新行。它还将更新一个 last updated 计数器
+来记录最后一次添加的数据。
 
 ```js
 var pubsub = {};
