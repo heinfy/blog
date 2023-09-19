@@ -81,6 +81,12 @@ const config = {
           {
             type: 'docSidebar',
             position: 'left',
+            sidebarId: 'h5c3',
+            label: 'HTML和CSS'
+          },
+          {
+            type: 'docSidebar',
+            position: 'left',
             sidebarId: 'javascript',
             label: 'JavaScript'
           },
