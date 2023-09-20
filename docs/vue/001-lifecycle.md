@@ -5,7 +5,7 @@ keywords: [Vue]
 tags:
   - Vue
 hide_title: true
-sidebar_position: 5
+sidebar_position: 1
 description: Vue生命周期图
 custom_edit_url: null
 ---
