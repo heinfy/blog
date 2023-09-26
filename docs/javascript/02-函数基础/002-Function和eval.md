@@ -82,7 +82,6 @@ eval() 是一个危险的函数，容易被攻击；eval() 通常比其他替代
 ## 面试题
 
 ```js
-// 面试题 1
 var a = 1,
   b = 2;
 function test() {
@@ -101,7 +100,6 @@ Function 构造器与函数声明之间的不同：
 eval 执行创建函数的代码不同。
 
 ```js
-// 面试题 2
 var a = 1,
   b = 2;
 function test() {
