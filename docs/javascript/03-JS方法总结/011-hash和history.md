@@ -75,11 +75,11 @@ let stateObj = { foo: 'bar' };
 history.pushState(stateObj, 'page 2', 'bar.html');
 ```
 
-这将使浏览器地址栏显示为``http://mozilla.org/bar.html`，但是并不会导致浏览器加载`bar.html`，甚至不会
+这将使浏览器地址栏显示为`http://mozilla.org/bar.html`，但是并不会导致浏览器加载`bar.html`，甚至不会
 检查`bar.html`是否存在。
 
 假设用户又访问了`http://google.com`，然后点击了返回按钮，此时地址栏现实的是
-``http://mozilla.org/bar.html`，`history.state`中包含了`stateObj`的一份拷贝。页面此时展现
+`http://mozilla.org/bar.html`，`history.state`中包含了`stateObj`的一份拷贝。页面此时展现
 为`bar.html`。切页面被重新加载了，所以`popstate`事件将不会被触发。
 
 如果我们再次点击返回按钮，页面 URL 会变为`http://mozilla.org/foo.html`，文档对象 document 会触发另外

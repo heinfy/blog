@@ -1,7 +1,6 @@
 # Object.defineProperty
 
 - 文档：[【mozilla defineProperty】](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
-
 - 学习视频：[从 0 到 1 学习「Object.defineProperty」](https://www.bilibili.com/video/BV12z4y1U7no)
 
 ## 定义
