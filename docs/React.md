@@ -30,3 +30,4 @@ custom_edit_url: null
 - [React 新旧生命周期的思考理解](https://zhuanlan.zhihu.com/p/65124686?utm_source=qq)
 - [React Hooks 免费视频教程](https://www.bilibili.com/video/BV1y4411Q7yH)
 - [React Hooks 免费视频教程(共 11 集)](http://jspang.com/detailed?id=50)
+- [redux-saga 视频教程](https://www.bilibili.com/video/BV1aK411L7Ya)
