@@ -2,9 +2,11 @@
 
 ## 介绍
 
-React.forwardRef 会创建一个 React 组件，这个组件能够将其接受的 ref 属性转发到其组件树下的另一个组件中。这种技术并不常见，但在以下两种场景中特别有用：
+在React中，`React.forwardRef`是一个函数，它允许组件将ref传递给其子组件。
 
-React.forwardRef 接受渲染函数作为参数。React 将使用 props 和 ref 作为参数来调用此函数。此函数应返回 React 节点。
+通常，当你在函数组件中需要访问子组件的DOM节点或实例时，你可以使用ref。**但是，在使用函数组件时，ref不能直接传递给函数组件，因为函数组件没有实例。**这时候，`React.forwardRef`就派上用场了。
+
+`React.forwardRef`接受一个渲染函数，该函数接收`props`和`ref`作为参数，并返回组件的React元素。通过这种方式，你可以将ref从父组件传递到函数组件内部的子组件。
 
 ```jsx
 import React, { useRef, useEffect, forwardRef } from 'react';
@@ -45,7 +47,7 @@ const App = () => {
 export default App;
 ```
 
-**总结： forwardRef 的目的就是为父组件获取子组件的 dom。**
+**总结： forwardRef 的目的就是获取函数组件的 dom 引用。**
 
 ## 链接
 

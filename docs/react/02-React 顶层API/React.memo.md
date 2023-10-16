@@ -2,12 +2,7 @@
 
 ## 用法
 
-`React.memo` 的作用：如果你的组件在相同 props 的情况下渲染相同的结果，那么你可以通过将其包装在
-`React.memo` 中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。这意味着在这种情况下，React
-将跳过渲染组件的操作并直接复用最近一次渲染的结果。
-
-对于`Function Component`，react 提供了 `React.memo` 这个 HOC，与 `class component` 的
-`PureComponent` 相似。
+`React.memo`接受一个函数组件并返回一个新的组件。新的组件将仅在其 props 发生变化时重新渲染。如果组件的 props 没有发生变化，`React.memo`将返回上一次渲染的结果，而不会执行函数组件的重新渲染。
 
 `React.memo()` 的用法
 
@@ -26,8 +21,7 @@ const App = React.memo(
 );
 ```
 
-注意： React.memo 仅检查 props 变更。如果函数组件被 React.memo 包裹，且其实现中拥有
-useState，useReducer 或 useContext 的 Hook，当 context 发生变化时，它仍会重新渲染。
+注意： React.memo 仅检查 props 变更。如果函数组件被 React.memo 包裹，且其实现中拥有 useState，useReducer 或 useContext 的 Hook，当 context 发生变化时，它仍会重新渲染。
 
 测试案例：
 
@@ -100,8 +94,7 @@ const ChildMemo = memo(props => {
 }, isEqual);
 ```
 
-点击 count1 和 count2 加一，Child 组件跟着渲染，点击 计算 total 按钮，Child ChildMemo 都会渲染。结果
-如图：
+点击 count1 和 count2 加一，Child 组件跟着渲染，点击 计算 total 按钮，Child ChildMemo 都会渲染。结果如图：
 
 ![memo](assets/memo.gif)
 
