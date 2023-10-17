@@ -1,85 +1,95 @@
-# useDeferredValue
+# React.useDeferredValue
 
-seDeferredValue：可以让状态滞后派生，与 useTransition 功能类似，推迟屏幕优先级不高的部分。
-
-在一些场景中，渲染比较消耗性能，比如输入框。输入框的内容去调取后端服务，当用户连续输入的时候会不断地
-调取后端服务，其实很多的片段信息是无用的，这样会浪费服务资源， React 的响应式更新和 JS 单线程的特性
-也会导致其他渲染任务的卡顿。而 useDeferredValue 就是用来解决这个问题的。
-
-> 问：useDeferredValue 和 useTransition 怎么这么相似，两者有什么异同点？
+> lets you defer updating the less important parts of the screen.
 >
-> 答：useDeferredValue 和 useTransition 从本质上都是标记成了过渡更新任务，不同点在于
-> useDeferredValue 是将原值通过过渡任务得到新的值， 而 useTransition 是将紧急更新任务变为过渡任务。
->
-> 也就是说，useDeferredValue 用来处理数据本身，useTransition 用来处理更新函数。
+> 允许用户推迟屏幕更新优先级不高部分。通俗来讲，如果说某些渲染比较消耗性能，比如存在实时计算和反馈，我们可以使用这个`Hook`降低其计算的优先级，使得避免整个应用变得卡顿。
 
-**基本使用：**
+较多的场景可能就在于用户反馈输入上。比如百度的输入框，用户可能输入的很快，相信大家还有个体会，就是我们使用输入法的时候，中间还在选打哪个字呢，拼音或者输入片段就已经被搜索了。
 
-```ts
-const deferredValue = useDeferredValue(value);
-```
+![useDeferredValue](assets/2022316110719253.gif)
 
-**Params：**
+这里就存在问题了，用户连续输入的时候，不停地在进行计算或者调用后端服务，其实中间态的很多输入片段的信息是无用的，既浪费了服务资源，也因为`React`应用实时更新和 JS 的单线程特性导致其他渲染任务卡顿。那我们使用`useDeferredValue`来使用下，如何避免这个问题。
 
-- value：接受一个可变的值，如`useState`所创建的值。
+## 代码案例
 
-**Result：**
+```jsx
+import React, { useState, useEffect } from 'react';
 
-- deferredValue：返回一个延迟状态的值。
+const List = props => {
+  const [list, setList] = useState([]);
+  const [count, setCount] = useState(0);
 
-**基本用法：**
-
-```tsx
-import { useState, useDeferredValue } from 'react';
-import { Input } from 'antd';
-
-const getList = (key: any) => {
-  const arr = [];
-  for (let i = 0; i < 10000; i++) {
-    if (String(i).includes(key)) {
-      arr.push(<li key={i}>{i}</li>);
-    }
-  }
-  return arr;
+  useEffect(() => {
+    setCount(count => count + 1);
+    setTimeout(() => {
+      setList([
+        { name: props.text, value: Math.random() },
+        { name: props.text, value: Math.random() },
+        { name: props.text, value: Math.random() },
+        { name: props.text, value: Math.random() },
+        { name: props.text, value: Math.random() },
+        { name: props.text, value: Math.random() },
+        { name: props.text, value: Math.random() }
+      ]);
+    }, 500);
+  }, [props.text]);
+  return [
+    <p>{'我被触发了' + count + '次'}</p>,
+    <ul>
+      {list.map(item => (
+        <li>
+          Hello:{item.name} value:{item.value}
+        </li>
+      ))}
+    </ul>
+  ];
 };
 
-const Index: React.FC<any> = () => {
-  //订阅
-  const [input, setInput] = useState('');
-  const deferredValue = useDeferredValue(input);
-  console.log('value：', input);
-  console.log('deferredValue：', deferredValue);
+export default function App() {
+  const [text, setText] = useState('喵爸');
 
+  const handleChange = e => {
+    setText(e.target.value);
+  };
   return (
-    <>
-      <div>大家好，我是小杜杜，一起玩转Hooks吧！</div>
-      <Input
-        value={input}
-        onChange={(e: any) => setInput(e.target.value)}
+    <div className='App'>
+      <input
+        value={text}
+        onChange={handleChange}
       />
-      <div>
-        <ul>{deferredValue ? getList(deferredValue) : null}</ul>
-      </div>
-    </>
+      <List text={text} />
+    </div>
   );
-};
-
-export default Index;
+}
 ```
 
-**效果：**
+一般我们的代码是这样写的。输入框的值变化的时候，我们使用`setTimeout`来模拟下向后端请求数据，或者大量计算的耗时操作。这个时候只要输入框的内容发生变化就会触发`useEffect`，我们用`count`来进行计数。
 
-![img](assets/a58cbd54cd4248d2a118b3cb47ec64a0tplv-k3u1fbpfcp-jj-mark1890000q75.avis)
+接下来改造一下：
 
-上述的功能类似于搜索，从 1w 个数中找到输入框内的数。
+```jsx
+export default function App() {
+  const [text, setText] = useState('喵爸');
+  // 添加代码
+  const deferredText = useDeferredValue(text, { timeoutMs: 300 });
+  const handleChange = e => {
+    setText(e.target.value);
+  };
+  return (
+    <div className='App'>
+      <input
+        value={text}
+        onChange={handleChange}
+      />
+      {/* 添加代码 */}
+      <List text={deferredText} />
+    </div>
+  );
+}
+```
 
-> 问：什么场景下使用`useDeferredValue` 和 `useTransition` ？
->
-> 答：通过上面的两个例子介绍我们知道，useDeferredValue 和 useTransition 实际上都是用来处理数据量大的
-> 数据，比如，百度输入框、散点图等，都可以使用。它们并不适用于少量数据。
->
-> 但在这里更加推荐使用 useTransition，因为 useTransition 的性能要高于 useDeferredValue，除非像一些第
-> 三方的 Hooks 库，里面没有暴露出更新的函数，而是直接返回值，这种情况下才去考虑使用
-> useDeferredValue。
->
-> 这两者可以说是一把双刃剑，在数据量大的时候使用会优化性能，而数据量低的时候反而会影响性能。
+们仅需要修改外部组件，使得传入`List`的`Text`变量是一个延迟更新的值。
+
+![2022316110719255](assets/2022316110719255.gif)
+
+细心的同学可以发现了，咦？！好像没什么区别呀。其实原因在于，首先`timeoutMs`这个参数的含义是延迟的值允许延迟多久，事实上网络和设备允许的情况下，`React`会尝试使用更低的延迟。这一点是不是非常 nice 呀。
