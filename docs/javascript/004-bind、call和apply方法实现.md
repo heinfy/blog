@@ -3,59 +3,56 @@
 ```js
 var obj = { name: '石榴' };
 var type = '水果';
+
+function sayHi(type) {
+  console.log(`这是${type}——${this.name}`);
+}
 ```
 
 ## bind
 
 ```js
-Function.prototype.myBind = function (context, ...rest) {
-  context = context || window;
-  let args = rest;
-  let symbol = Symbol('__call__');
-  context[symbol] = this;
+Function.prototype._bind = function (context, ...rest) {
+  // 获取当前上下文对象
+  let ctx = context || window;
+  let symbol = Symbol('__bind__');
+  // 为上下文添加唯一方法
+  ctx[symbol] = this;
   return function () {
-    return context[symbol](...rest);
+    return ctx[symbol](...rest);
   };
 };
-function sayHi(type) {
-  console.log(`这是${type}——${this.name}`);
-}
-let fn = sayHi.myBind(obj, type);
-fn();
+
+
+sayHi._bind(obj, type)();
 ```
 
 ## call
 
 ```js
-Function.prototype.myCall = function (context, ...rest) {
-  context = context || window;
-  let args = rest;
+Function.prototype._call = function (context, ...rest) {
+  let ctx = context || window;
   let symbol = Symbol('__call__');
-  context[symbol] = this;
-  let result = context[symbol](...rest);
-  delete context[symbol];
-  return result;
+  ctx[symbol] = this;
+  let res = ctx[symbol](...rest);
+  delete ctx[symbol];
+  return res;
 };
-function sayHi(type) {
-  console.log(`这是${type}——${this.name}`);
-}
-sayHi.myCall(obj, type);
+
+sayHi._call(obj, type);
 ```
 
 ## apply
 
 ```js
-Function.prototype.myApply = function (context, ...rest) {
-  context = context || window;
-  let args = rest;
+Function.prototype._apply = function (context, ...rest) {
+  let ctx = context || window;
   let symbol = Symbol('__apply__');
-  context[symbol] = this;
-  let result = context[symbol](...rest);
-  delete context[symbol];
-  return result;
+  ctx[symbol] = this;
+  let res = ctx[symbol](...rest);
+  delete ctx[symbol];
+  return res;
 };
-function sayHi(type) {
-  console.log(`这是${type}——${this.name}`);
-}
-sayHi.myApply(obj, type);
+
+sayHi._apply(obj, type);
 ```

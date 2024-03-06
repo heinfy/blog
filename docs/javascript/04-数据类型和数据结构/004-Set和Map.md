@@ -61,6 +61,19 @@ let intersect = new Set([...a].filter(x => b.has(x))); // set {2, 3}
 let difference = new Set([...a].filter(x => !b.has(x))); // Set {1}
 ```
 
+## WeakSet
+
+WeakSet 结构与 Set 类似，也是不重复的值的集合。但是，它与 Set 有两个区别。
+
+1. WeakSet 的成员只能是对象和 Symbol 值，而不能是其他类型的值。
+2. WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于 WeakSet 之中。
+
+WeakSet 结构有以下三个方法。
+
+- WeakSet.prototype.add(value)：向 WeakSet 实例添加一个新成员，返回 WeakSet 结构本身。
+- WeakSet.prototype.delete(value)：清除 WeakSet 实例的指定成员，清除成功返回 true，如果在 WeakSet 中找不到该成员或该成员不是对象，返回 false。
+- WeakSet.prototype.has(value)：返回一个布尔值，表示某个值是否在 WeakSet 实例之中。
+
 ## Map
 
 ES6 提供了 Map 数据结构，Object 结构提供了“字符串—值”的对应，Map 结构提供了“值—值”的对应，是一种更完善的 Hash 结构实现。
@@ -103,3 +116,11 @@ map.get('title'); // "Author"
 - `map.has(key)`： 返回一个布尔值，表示某个键是否在当前 Map 对象之中
 - `map.delete(key)`： 删除某个键，返回 true，如果删除失败，返回 false
 - `map.clear()`： clear 方法清除所有成员，没有返回值
+
+## WeakMap
+
+WeakMap 结构与 Map 结构类似，也是用于生成键值对的集合。
+
+WeakMap 与 Map 的区别有两点。
+
+首先，WeakMap 只接受对象（null 除外）和 Symbol 值作为键名，不接受其他类型的值作为键名。其次，WeakMap 的键名所指向的对象，不计入垃圾回收机制。
