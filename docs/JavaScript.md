@@ -19,3 +19,5 @@ custom_edit_url: null
 - [:star:必读:star: Mozilla Function](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function)
 - [你不知道的『Function』](https://www.bilibili.com/video/BV1hX4y1M7jo)
 - [你还不会封装图片懒加载函数吗？](https://www.bilibili.com/video/BV1Ei4y137Lx)
+- [js 中 0.1+0.2 为什么不等于 0.3](https://www.jianshu.com/p/404e2958c281)
+- [js 中 0.1+0.2 为什么不等于 0.3](https://www.jianshu.com/p/2a5c877315ef)
