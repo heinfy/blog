@@ -118,7 +118,7 @@ const config = {
             type: 'docSidebar',
             position: 'left',
             sidebarId: 'mst',
-            label: '面试题'
+            label: '其他'
           },
           {
             type: 'docSidebar',
