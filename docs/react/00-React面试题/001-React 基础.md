@@ -1,6 +1,80 @@
+## Q：react 为什么要引入 Fiber 架构？解决了什么问题？
+
+A： **JavaScript 线程和渲染线程必须是互斥的**：这两个线程不能够穿插执行，必须串行。
+
+React 引入 Fiber 架构是为了解决**原有的调度算法在处理大型应用时可能导致的性能问题以及在用户交互过程中的响应性问题**。在 React 16 之前，React 使用的是栈调度（`Stack Reconciliation`）算法，**该算法是一个同步的递归过程，在处理大型组件树时可能会导致主线程长时间被占用，造成页面卡顿或者无法及时响应用户输入。**
+
+原有的架构问题包括：
+
+1. **同步渲染导致的阻塞**：React 15 及以前版本的渲染是同步的，意味着当应用进行大规模渲染时，整个渲染过程会阻塞主线程，造成页面卡顿和用户交互不流畅。
+2. **难以中断和终止渲染**：在旧的调度算法中，一旦开始渲染过程，就很难中断或者终止渲染，这意味着即使用户进行了新的交互，React 也可能无法立即响应。
+3. **无法优先处理高优先级任务**：旧的调度算法难以灵活地处理不同优先级的任务，比如对用户输入的响应需要高优先级，而对于低优先级的任务则可以稍后处理。
+
+Fiber 架构带来的优势包括：
+
+1. **增量渲染**：Fiber 架构使用增量渲染的方式，将渲染过程拆分成小块，通过使用 requestIdleCallback API（或者其 polyfill）等，将任务分解成多个帧，避免了一次性长时间占用主线程。
+2. **可中断和恢复**：Fiber 架构允许在渲染过程中中断和恢复，这使得 React 可以更灵活地响应用户的交互操作，提高了页面的响应性。
+3. **优先级调度**：Fiber 架构引入了优先级调度的概念，可以根据任务的优先级灵活地调整任务的执行顺序，保证了对用户交互的即时响应，同时也能合理地处理其他任务。
+
+总的来说，Fiber 架构的引入使得 React 在处理大型应用和用户交互时更加高效、灵活和响应。
+
+参看： [如何理解 Fiber 架构的迭代动机与设计思想](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/12%20%20%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%20Fiber%20%E6%9E%B6%E6%9E%84%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%8A%A8%E6%9C%BA%E4%B8%8E%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%EF%BC%9F.md) [React 16.7 Fiber 源码解读 （一）](https://blog.csdn.net/napoleonxxx/article/details/86568941) [说说对 Fiber 架构的理解？解决了什么问题？](https://github.com/febobo/web-interview/issues/209)
+
+## Q：说说 React 性能优化的手段有哪些？
+
+A：
+
+1. `PureComponent + Immutable.js`
+
+[PureComponent + Immutable.js](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/22%20%20%E6%80%9D%E8%B7%AF%E6%8B%93%E5%B1%95%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8%EF%BC%9F.md#%E8%BF%9B%E9%98%B6%E7%8E%A9%E6%B3%95purecomponent--immutablejs)
+
+2. `**React.memo**`** 与 **`**useMemo**`
+
+[函数组件的性能优化：React.memo 和 useMemo](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/22%20%20%E6%80%9D%E8%B7%AF%E6%8B%93%E5%B1%95%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8%EF%BC%9F.md#%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96reactmemo-%E5%92%8C-usememo)
+
+3. **避免使用内联函数**
+   1. 使用内联函数，则每次调用 render 函数时都会创建一个新的函数实例
+
+```jsx
+<input
+  type='button'
+  onClick={e => {
+    this.setState({ inputValue: e.target.value });
+  }}
+  value='Click For Inline Function'
+/>
+```
+
+4. **懒加载组件**
+   1. 从工程方面考虑，`webpack`存在代码拆分能力，可以为应用创建多个包，并在运行时动态加载，减少初始包的大小
+   2. 而在 react 中使用到了`Suspense` 和 `lazy`组件实现代码拆分功能
+
+```jsx
+const johanComponent = React.lazy(() =>
+  import(/* webpackChunkName: "johanComponent" */ './component')
+);
+
+export const johanAsyncComponent = props => (
+  <React.Suspense fallback={<Spinner />}>
+    <johanComponent {...props} />
+  </React.Suspense>
+);
+```
+
+5. **事件绑定方式**
+   1. 在`render`方法中，使用`bind`和`render`方法中使用箭头函数这两种形式在每次组件`render`的时候都会生成新的方法实例
+   2. 而`constructor`中`bind`事件与定义阶段使用箭头函数绑定这两种形式只会生成一个方法实例，性能方面会有所改善
+6. **服务端渲染**
+7. **使用 **`**React Fragment**`** 避免额外标记：**`** <></>**`
+8. **使用 **`**shouldComponentUpdate**`** 规避冗余的更新逻辑**
+
+参看： [如何打造高性能的 React 应用](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/22%20%20%E6%80%9D%E8%B7%AF%E6%8B%93%E5%B1%95%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8%EF%BC%9F.md) [面试官：说说 React 性能优化的手段有哪些？ · Issue #211 · febobo/web-interview](https://github.com/febobo/web-interview/issues/211)
+
 ## Q：说说 Real DOM 和 Virtual DOM 的区别？优缺点？
 
-A：Real DOM 就是文档对象模型，Virtual DOM 本质上是以 JavaScript 对象形式存在的对 DOM 的描述。Real DOM 的属性和 Virtual DOM 对象的节点一一对应。 Virtual DOM 的优点：
+A：Real DOM 就是文档对象模型，Virtual DOM 本质上是以 JavaScript 对象形式存在的对 DOM 的描述。Real DOM 的属性和 Virtual DOM 对象的节点一一对应。
+
+Virtual DOM 的优点：
 
 1. 结合 JSX 简单方便
 2. 能够有效避免真实 DOM 树的频繁更新，减少多次引起的回流和重绘，提交性能
@@ -13,7 +87,9 @@ Virtual DOM 的缺点：
 
 ## Q：说说 React 生命周期有哪些不同阶段？
 
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/35816928/1687743927637-143b2e50-856f-47c8-8d52-a78138e8b133.png#averageHue=%23f9f8f6&clientId=ue0d1ee82-e8ee-4&from=paste&height=450&id=ua358a678&originHeight=743&originWidth=1293&originalType=binary&ratio=1.375&rotation=0&showTitle=false&size=71640&status=done&style=stroke&taskId=u9ceb150b-3cc1-4e31-9cbe-89e520278ea&title=&width=783.6363183434042) A：[react 的生命周期（图示）\_react 生命周期图解\_YanAhao 的博客-CSDN 博客](https://blog.csdn.net/YanAhao/article/details/108319723)
+- [react 的生命周期（图示）\_react 生命周期图解\_YanAhao 的博客-CSDN 博客](https://blog.csdn.net/YanAhao/article/details/108319723)
+
+![React 生命周期](assets/lifecycle.png)
 
 ## Q：super()和 super(props)有什么区别？
 
@@ -29,13 +105,11 @@ A：
 
 ## Q：React 为什么要绑定 this？
 
-A：当我们写一个事件时 onClick={ this.fn }，事实上 fn 函数是作为一个回调函数传给了 SyntheticEvent。 [严格模式 - JavaScript | MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F%E4%B8%AD%E7%9A%84%E5%8F%98%E5%8C%96)
+A：当我们写一个事件时 onClick={ this.fn }，事实上 fn 函数是作为一个回调函数传给了 SyntheticEvent。
+
+[严格模式 - JavaScript | MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F%E4%B8%AD%E7%9A%84%E5%8F%98%E5%8C%96)
 
 > **在严格模式下通过 this 传递给一个函数的值不会被强制转换为一个对象。**对一个普通的函数来说，this 总会是一个对象：不管调用时 this 它本来就是一个对象；还是用布尔值，字符串或者数字调用函数时函数里面被封装成对象的 this；还是使用 undefined 或者 null 调用函数式 this 代表的全局对象（使用 call, apply 或者 bind 方法来指定一个确定的 this）。这种自动转化为对象的过程不仅是一种性能上的损耗，同时在浏览器中暴露出全局对象也会成为安全隐患，因为全局对象提供了访问那些所谓安全的 JavaScript 环境必须限制的功能的途径。**所以对于一个开启严格模式的函数，指定的 this 不再被封装为对象，而且如果没有指定 this 的话它值是 undefined。**
-
-## Q：React 中组件之间如何通信？
-
-A：[面试官：React 中组件之间如何通信？](https://github.com/febobo/web-interview/issues/189)
 
 ## Q：React 中的 key 有什么作用？
 
@@ -159,7 +233,9 @@ export default App;
 
 ## Q：说说对高阶组件的理解？应用场景?
 
-A：高阶组件的主要功能是封装并分离组件的通用逻辑，让通用逻辑在组件间更好地被复用，提高代码的复用性和灵活性。在实际应用中，常常用于与核心业务无关但又在多个模块使用的功能，如权限控制、日志记录、数据校验、异常处理、统计上报等。
+A：高阶组件的主要功能是封装并分离组件的通用逻辑，让通用逻辑在组件间更好地被复用，提高代码的复用性和灵活性。
+
+在实际应用中，常常用于与核心业务无关但又在多个模块使用的功能，如**权限控制、日志记录、数据校验、异常处理、统计上报**等。
 
 ## Q：说说对 React Hooks 的理解？解决了什么问题？
 
@@ -169,17 +245,6 @@ A：Hooks 的本质：一套能够使函数组件更强大、更灵活的“钩�
 - 逻辑复杂的组件难以开发与维护，每个生命周期函数中可能会包含着各种互不相关的逻辑在里面
 - 类组件中的 this 增加学习成本，类组件在基于现有工具的优化上存在些许问题
 - 函数组件补齐（相对于类组件来说）缺失的能力
-
-## Q：说说 react 中引入 css 的方式有哪几种？区别？
-
-A：
-
-- 在组件内直接使用 `object`
-- 组件中引入 `.css` 文件
-- 组件中引入 `.module.css` 文件
-- CSS in JS
-
-参看： [说说 react 中引入 css 的方式有哪几种？区别？](https://github.com/febobo/web-interview/issues/196)
 
 ## Q：在 react 中组件间过渡动画如何实现？
 
@@ -224,62 +289,6 @@ A：React 将 Virtual DOM 树转换成 actual DOM 树的最少操作的过程称
 3. key 属性的设置，可以帮我们尽可能重用同一层级内的节点。
 
 参看： [diff 算法](https://github.com/heinfy/react-learn/blob/main/04-%E6%B7%B1%E5%85%A5%20REACT%20%E6%8A%80%E6%9C%AF%E6%A0%88/03%E7%AB%A0-5.diff%E7%AE%97%E6%B3%95.md) [https://github.com/febobo/web-interview/issues/208](https://github.com/febobo/web-interview/issues/208)
-
-## Q：说说对 Fiber 架构的理解？解决了什么问题？
-
-A： `Stack Reconciler`存在的问题： **JavaScript 线程和渲染线程必须是互斥的**：这两个线程不能够穿插执行，必须串行。当其中一个线程执行时，另一个线程只能挂起等待。 `Stack Reconciler` 是一个**同步的递归过程**。本质上来说，栈调和机制下的 Diff 算法，其实是树的深度优先遍历的过程。这个过程的致命性在于它是同步的，不可以被打断。当处理结构相对复杂、体量相对庞大的虚拟 DOM 树时，Stack Reconciler 需要的调和时间会很长，这就意味着 jsxScript 线程将长时间地霸占主线程，进而导致我们上文中所描述的渲染卡顿/卡死、交互长时间无响应等问题。
-
-参看： [如何理解 Fiber 架构的迭代动机与设计思想](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/12%20%20%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%20Fiber%20%E6%9E%B6%E6%9E%84%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%8A%A8%E6%9C%BA%E4%B8%8E%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%EF%BC%9F.md) [React 16.7 Fiber 源码解读 （一）](https://blog.csdn.net/napoleonxxx/article/details/86568941) [说说对 Fiber 架构的理解？解决了什么问题？](https://github.com/febobo/web-interview/issues/209)
-
-## Q：说说 React 性能优化的手段有哪些？
-
-A：
-
-1. `**PureComponent**`** + **`**Immutable.js**`
-
-[PureComponent + Immutable.js](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/22%20%20%E6%80%9D%E8%B7%AF%E6%8B%93%E5%B1%95%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8%EF%BC%9F.md#%E8%BF%9B%E9%98%B6%E7%8E%A9%E6%B3%95purecomponent--immutablejs)
-
-2. `**React.memo**`** 与 **`**useMemo**`
-
-[函数组件的性能优化：React.memo 和 useMemo](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/22%20%20%E6%80%9D%E8%B7%AF%E6%8B%93%E5%B1%95%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8%EF%BC%9F.md#%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96reactmemo-%E5%92%8C-usememo)
-
-3. **避免使用内联函数**
-   1. 使用内联函数，则每次调用 render 函数时都会创建一个新的函数实例
-
-```jsx
-<input
-  type='button'
-  onClick={e => {
-    this.setState({ inputValue: e.target.value });
-  }}
-  value='Click For Inline Function'
-/>
-```
-
-4. **懒加载组件**
-   1. 从工程方面考虑，`webpack`存在代码拆分能力，可以为应用创建多个包，并在运行时动态加载，减少初始包的大小
-   2. 而在 react 中使用到了`Suspense` 和 `lazy`组件实现代码拆分功能
-
-```jsx
-const johanComponent = React.lazy(() =>
-  import(/* webpackChunkName: "johanComponent" */ './component')
-);
-
-export const johanAsyncComponent = props => (
-  <React.Suspense fallback={<Spinner />}>
-    <johanComponent {...props} />
-  </React.Suspense>
-);
-```
-
-5. **事件绑定方式**
-   1. 在`render`方法中，使用`bind`和`render`方法中使用箭头函数这两种形式在每次组件`render`的时候都会生成新的方法实例
-   2. 而`constructor`中`bind`事件与定义阶段使用箭头函数绑定这两种形式只会生成一个方法实例，性能方面会有所改善
-6. **服务端渲染**
-7. **使用 **`**React Fragment**`** 避免额外标记：**`** <></>**`
-8. **使用 **`**shouldComponentUpdate**`** 规避冗余的更新逻辑**
-
-参看： [如何打造高性能的 React 应用](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/22%20%20%E6%80%9D%E8%B7%AF%E6%8B%93%E5%B1%95%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8%EF%BC%9F.md) [面试官：说说 React 性能优化的手段有哪些？ · Issue #211 · febobo/web-interview](https://github.com/febobo/web-interview/issues/211)
 
 ## Q：说说你在 React 项目是如何捕获错误的？
 
