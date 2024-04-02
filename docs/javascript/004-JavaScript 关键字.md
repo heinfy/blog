@@ -1,12 +1,47 @@
 # JavasCript 关键字
 
+## 作用域
+
+**ES5 只有全局作用域和函数作用域，没有块级作用域。**
+
+ES5 规定，函数只能在顶层作用域和函数作用域之中声明，不能在块级作用域声明。
+
+影响：
+
+1. 内层变量可能会覆盖外层变量。
+
+```js
+var tmp = new Date();
+
+function f() {
+  console.log(tmp);
+  if (false) {
+    var tmp = 'hello world';
+  }
+}
+
+f(); // undefined
+```
+
+2. 用来计数的循环变量泄露为全局变量。
+
+```js
+var s = 'hello';
+
+for (var i = 0; i < s.length; i++) {
+  console.log(s[i]);
+}
+
+console.log(i); // 5
+```
+
 ## var let const 有什么区别
 
 `var`, `let`, 和 `const` 是 JavaScript 中用于声明变量的关键字，它们之间有以下几个区别：
 
 1. **作用域：**
    - `var` 声明的变量是函数作用域（function-scoped），即在声明它的函数内部有效。
-   - `let` 和 `const` 声明的变量是块级作用域（block-scoped），即在声明它们的块（比如 `{}` 内部）有效。块是指一对花括号 `{}` 包裹的代码块。
+   - `let` 和 `const` 声明的变量“绑定”（binding）块级作用域（block-scoped），不再受外部的影响。块是指一对花括号 `{}` 包裹的代码块。
 2. **变量提升（Hoisting）：**
    - `var` 声明的变量会发生变量提升，即在执行上下文中，变量声明会被提升到函数或全局作用域的顶部，但初始化不会提升。
    - `let` 和 `const` 声明的变量也会发生变量提升，但在初始化前，访问这些变量会导致 ReferenceError，这称为“暂时性死区”（Temporal Dead Zone，TDZ）。
@@ -18,6 +53,50 @@
 5. **可变性（Mutability）：**
    - 使用 `var` 或 `let` 声明的变量的值可以随时改变。
    - 使用 `const` 声明的变量是常量，其值一旦被赋值就不能再改变。但对于对象（包括数组）来说，其引用是不可变的，但对象本身的属性或数组中的元素是可变的。
+
+```js
+for (let i = 0; i < 10; i++) {
+  // ...
+}
+console.log(i); // ReferenceError: i is not defined
+```
+
+```js
+var a = [];
+for (var i = 0; i < 10; i++) {
+  a[i] = function () {
+    console.log(i);
+  };
+}
+a[6](); // 10
+```
+
+变量 i 是 var 命令声明的，在全局范围内都有效，所以全局只有一个变量 i。`console.log(i)`，里面的 i 指向的就是全局的 i，导致运行时输出的是最后一轮的 i 的值，也就是 10。
+
+```js
+var a = [];
+for (let i = 0; i < 10; i++) {
+  a[i] = function () {
+    console.log(i);
+  };
+}
+a[6](); // 6
+```
+
+变量 i 是 let 声明的，当前的 i 只在本轮循环有效，所以每一次循环的 i 其实都是一个新的变量，所以最后输出的是 6
+
+另外，for 循环还有一个特别之处，就是设置循环变量的那部分是一个父作用域，而循环体内部是一个单独的子作用域。
+
+```js
+for (let i = 0; i < 3; i++) {
+  console.log(i); // ReferenceError: i is not defined
+  let i = 'abc';
+  console.log(i);
+}
+// abc
+// abc
+// abc
+```
 
 ## async await 的原理是什么?
 
