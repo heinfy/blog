@@ -10,17 +10,42 @@ description: Vue 的 beforeRoute
 custom_edit_url: null
 ---
 
-组件中的 beforeRoute 函数：
+组件内守卫：
 
 - `beforeRouteEnter(to, from, next) {}`
 - `beforeRouteUpdate(to, from, next) {}`
 - `beforeRouteLeave(to, from, next) {}`
 
-全局中的 before 函数
+全局守卫
 
 - `router.beforeEach((to, from, next) => {}`
 - `router.beforeResolve((to, from, next) => {}`
 - `router.afterEach((to, from) => {}`
+
+路由独享守卫
+
+- `beforeEnter((to, from, next) => {}`
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/foo',
+      component: Foo,
+      beforeEnter: (to, from, next) => {
+        // 在进入路由前进行一些逻辑处理
+        // 比如验证用户权限
+        if (userAuthenticated()) {
+          next(); // 继续路由导航
+        } else {
+          next('/login'); // 重定向到登录页面
+        }
+      }
+    }
+    // 其他路由配置项...
+  ]
+});
+```
 
 进入一个页面触发的函数：
 

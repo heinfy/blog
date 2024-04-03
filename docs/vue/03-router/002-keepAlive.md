@@ -5,7 +5,7 @@ keywords: [Vue]
 tags:
   - Vue
 hide_title: true
-sidebar_position: 17
+sidebar_position: 2
 description: Vue 的 keepAlive 和 activated
 custom_edit_url: null
 ---
