@@ -1,8 +1,15 @@
 # React.useRef
 
+## ref 是什么
+
+在 React 中，ref 是用来访问组件实例或 DOM 元素的方式。它可以用于访问组件的方法或属性，以及直接操作 DOM 元素。
+
+- **访问 DOM 元素**：通过 ref 可以获取到渲染后的 DOM 元素，然后可以对其进行操作，比如改变样式、添加事件监听器等。
+- **访问子组件的方法**：通过 ref 可以访问子组件中暴露的方法或属性（`forwardRef` 和 `useImperativeHandle`）。
+
 ## createRef 和 useRef
 
-测试案例： 点击按钮获取输入框焦点
+案例： 点击按钮获取输入框焦点
 
 ```jsx
 import React, { createRef, useRef } from 'react';
