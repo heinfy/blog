@@ -2,7 +2,7 @@
 
 `const [isPending, startTransition] = useTransition()`
 
-返回一个状态值表示过渡更新任务的等待状态，以及一个启动该过渡更新任务的函数。可以将状态更新包装起来告诉 React 这是一个低优先级的更新。
+`React.useTransition` 是 React 提供的一个 Hook，用于管理渲染的过渡状态。**它用于在渲染过程中明确指定异步更新的开始和结束。这个 Hook 主要用于在渲染大量项目或动画时优化用户体验。**
 
 ```jsx
 function App() {

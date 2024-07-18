@@ -21,3 +21,5 @@ custom_edit_url: null
 - [你还不会封装图片懒加载函数吗？](https://www.bilibili.com/video/BV1Ei4y137Lx)
 - [js 中 0.1+0.2 为什么不等于 0.3](https://www.jianshu.com/p/404e2958c281)
 - [js 中 0.1+0.2 为什么不等于 0.3](https://www.jianshu.com/p/2a5c877315ef)
+- [why-should-we-use-pnpm](https://www.kochan.io/nodejs/why-should-we-use-pnpm.html)
+- [Bilibili - pnpm](https://www.bilibili.com/video/BV1B34y1E7MS)
