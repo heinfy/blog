@@ -2,11 +2,11 @@
 
 ## 作用域
 
-JavaScript的作用域是指**一个变量或者函数可以被访问的范围。作用域控制着变量与函数的可见性和生命周期。它是基于词法作用域的，意味着作用域在写代码时就已经确定，与函数是如何被调用无关。
+JavaScript 的作用域是指**一个变量或者函数可以被访问的范围**。作用域控制着变量与函数的可见性和生命周期。它是基于词法作用域的，意味着作用域在写代码时就已经确定，与函数是如何被调用无关。
 
 **ES5 只有全局作用域和函数作用域，没有块级作用域。**ES5 规定，函数只能在顶层作用域和函数作用域之中声明，不能在块级作用域声明。
 
-ES6引入了块级作用域（Block Scope），主要通过`let`和`const`关键字声明的变量或常量。
+ES6 引入了块级作用域（Block Scope），主要通过`let`和`const`关键字声明的变量或常量。
 
 影响：
 
@@ -507,6 +507,59 @@ myPromiseAll([promise1, promise2, promise3])
   .catch(error => {
     console.error('Error:', error);
   });
+```
+
+## 实现 promise.allSettled 方法
+
+```js
+function allSettled(promises) {
+  return new Promise(function (resolve) {
+    if (!Array.isArray(promises)) {
+      throw new Error('参数必须是数组');
+    }
+
+    let result = new Array(promises.length);
+    if (promises.length === 0) {
+      resolve(result);
+    }
+
+    let complateCount = 0;
+
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then(value => {
+          complateCount += 1;
+          result[index] = { status: 'fulfilled', value: value };
+          if (complateCount === promises.length) {
+            resolve(result);
+          }
+        })
+        .catch(reason => {
+          complateCount += 1;
+          result[index] = { status: 'rejected', value: reason };
+          if (complateCount === promises.length) {
+            resolve(result);
+          }
+        });
+    });
+  });
+
+  // 基于 Promise.all 实现
+  // return Promise.all(promises.map((promise) => {
+  //   return Promise.resolve(promise).then(value => {
+  //     return { status: 'fulfilled', value: value }
+  //   }).catch(reason => {
+  //     return { status: 'rejected', value: reason }
+  //   })
+  // }))
+}
+
+allSettled([
+  Promise.resolve(33),
+  new Promise(resolve => setTimeout(() => resolve(66), 0)),
+  99,
+  Promise.reject(new Error('一个错误'))
+]).then(values => console.log(values));
 ```
 
 ## JSON.stringify

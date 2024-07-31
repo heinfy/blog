@@ -296,6 +296,23 @@ A：React 将 Virtual DOM 树转换成 actual DOM 树的最少操作的过程称
 
 参看： [diff 算法](https://github.com/heinfy/react-learn/blob/main/04-%E6%B7%B1%E5%85%A5%20REACT%20%E6%8A%80%E6%9C%AF%E6%A0%88/03%E7%AB%A0-5.diff%E7%AE%97%E6%B3%95.md) [https://github.com/febobo/web-interview/issues/208](https://github.com/febobo/web-interview/issues/208)
 
+传统的树比较算法（如完全递归比较）的复杂度通常是 𝑂 (𝑛^3)，其中 n 是树中节点的数量。这是因为该算法可能需要对树中的每个节点进行多次遍历和比较。以下是详细的解释：
+
+_复杂度分析_
+
+1. 节点间比较：
+
+- 对于树 A 的每个节点，都需要与树 B 的每个节点进行比较。假设树 A 和树 B 都有 n 个节点，那么初步的比较就有 𝑂(𝑛^2) 的复杂度。
+
+2. 递归对子树进行比较：
+
+- 在每次比较节点时，还需要对比其子树，这需要递归地对子树进行相同的比较操作。
+- 如果我们假设每个节点有 m 个子节点，那么在最坏情况下，每个节点的每个子节点都需要进行比较，这样就导致了递归深度增加。
+
+综合上述两点，在最坏情况下，对于树中的每个节点，我们都需要对子树进行全面的比较，这会导致复杂度的立方增长：
+
+𝑂(𝑛)（节点数）×𝑂(𝑛)（比较每个节点的子树）×𝑂(𝑛)（递归深度）=𝑂(𝑛^3)
+
 ## Q：说说你在 React 项目是如何捕获错误的？
 
 A：为了解决出现的错误导致整个应用崩溃的问题，react16 引用了**错误边界**的概念。当抛出错误后，使用 `static getDerivedStateFromError()` 渲染备用 UI ，使用 `componentDidCatch()` 打印错误信息。参看： [错误边界 – React](https://zh-hans.legacy.reactjs.org/docs/error-boundaries.html#gatsby-focus-wrapper) [面试官：说说你在 React 项目是如何捕获错误的？ · Issue #216 · febobo/web-interview](https://github.com/febobo/web-interview/issues/216)
