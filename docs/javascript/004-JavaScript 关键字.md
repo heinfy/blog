@@ -628,68 +628,62 @@ console.log(b);
 - [mozilla defineProperty](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
 - [从 0 到 1 学习「Object.defineProperty」](https://www.bilibili.com/video/BV12z4y1U7no)
 
-**定义：**
+`Object.defineProperty` 是一个用于在对象上定义新属性或修改现有属性，并返回该对象的函数。它接受三个参数：
 
-> Object.defineProperty 给对象定义属性。
+1. **对象（`obj`）**：要在其上定义或修改属性的对象。
+2. **属性名（`prop`）**：要定义或修改的属性的名称（字符串）。
+3. **属性描述符（`descriptor`）**：一个对象，用于描述属性的配置。
 
-直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并**返回此对象**。
+**属性描述符（`descriptor`）**
 
-应当**直接在 Object 构造器对象上调用此方法**，而不是在任意一个 Object 类型的实例上调用。
+这是一个对象，用于描述属性的配置。属性描述符可以是数据描述符或访问器描述符，不能同时是两者。描述符的属性如下：
+
+数据描述符
+
+- **`value`**: 属性的值。可以是任何 JavaScript 值（默认值为 `undefined`）。
+- **`writable`**: 表示属性的值是否可以被重写（默认值为 `false`）。
+- **`enumerable`**: 表示属性是否会出现在对象的枚举属性中（默认值为 `false`）。
+- **`configurable`**: 表示属性的描述符是否可以被改变，属性是否可以被删除（默认值为 `false`）。
+
+**访问器描述符**
+
+- **`get`**: 一个给属性提供 getter 的函数，如果没有 getter 则为 `undefined`。函数返回值会被用作属性的值（默认值为 `undefined`）。
+- **`set`**: 一个给属性提供 setter 的函数，如果没有 setter 则为 `undefined`。函数接收唯一参数（新属性值）（默认值为 `undefined`）。
+- **`enumerable`**: 表示属性是否会出现在对象的枚举属性中（默认值为 `false`）。
+- **`configurable`**: 表示属性的描述符是否可以被改变，属性是否可以被删除（默认值为 `false`）。
 
 ```js
 var obj = {};
 
-var newObj = Object.defineProperty(obj, 'a', {
-  value: 100
+var newObj = (obj, 'example', {
+    value: 42,
+    writable: true,
+    enumerable: true,
+    configurable: true
 });
 
 console.log(obj === newObj); // true
-
-obj.defineProperty; // 报错， defineProperty 是 Object 挂载的静态方法！
 ```
 
-**参数：**
 
-`Object.defineProperty(obj, prop, descriptor)`
-
-> obj：要定义属性的对象 prop：要定义或修改的属性的名称或 Symbol descriptor：要定义或修改的属性描述符返回值：被传递给函数的对象
-
-**描述：**
-
-`Object.defineProperty` 可以精确添加或修改对象的属性。通过赋值操作添加的普通属性(`obj.a = 100`)是可以枚举的(`for...in`或者`Object.keys`)，也可以删除。但是`Object.defineProperty`默认不能枚举修改（immutable），不能重写、也不能删除，可以通过`descriptor`修改默认配置。
-
-对象里属性描述符有俩种形式：数据描述符和存取描述符。一个描述符只能是这两者其中之一；不能同时是两者。
-
-数据描述符是一个具体值的属性，例如（obj.a）的属性：
-
-- `configurable`： 默认为 false， true 时可以 `delete.a` 属性
-- `enumerable`： 默认为 false， 可枚举属性
-- `value`： 默认为 undefined，可以是任何有效的 JavaScript 值（数值，对象，函数等）
-- `writable`：默认为 false， 当且仅当该属性的 writable 键值为 true 时，属性的值，也就是上面的 value，才能被赋值运算(`obj.a = 200` 这种重新赋值)
-
-存取描述符是由 getter 函数和 setter 函数所描述的属性。
-
-- get：默认为 undefined。属性的 getter 函数，如果没有 getter，则为 undefined。当访问该属性时，会调用此函数。执行时不传入任何参数，但是会传入 this 对象（由于继承关系，这里的 this 并不一定是定义该属性的对象）。该函数的返回值会被用作属性的值。
-- set：默认为 undefined。属性的 setter 函数，如果没有 setter，则为 undefined。当属性值被修改时，会调用此函数。该方法接受一个参数（也就是被赋予的新值），会传入赋值时的 this 对象。
 
 ```js
-var obj = {};
+const obj = {};
+let internalValue = 0;
 
-var newObj = Object.defineProperty(obj, 'a', {
-  // 访问 obj.a 时，才会触发 get方法
-  get() {
-    console.log('get a:', 1);
-    return 1;
-  },
-  // 赋值时触发set，不会触发 get方法
-  set(newValue) {
-    console.log('set value:', newValue);
-  }
+Object.defineProperty(obj, 'example', {
+    get: function() {
+        return internalValue;
+    },
+    set: function(value) {
+        internalValue = value;
+    },
+    enumerable: true,
+    configurable: true
 });
 
-console.log(obj.a);
-
-obj.a = 200;
+obj.example = 42;
+console.log(obj.example); // 42
 ```
 
 **定义一个列表，设置列表中每项属性的是否允许篡改，删除等。**
@@ -701,18 +695,6 @@ const personInfo = [
     age: 26,
     job: 'IT工程师',
     publicKey: 1231313
-  },
-  {
-    name: 'ls',
-    age: 45,
-    job: 'IT工程师',
-    publicKey: 44545
-  },
-  {
-    name: 'ww',
-    age: 32,
-    job: 'IT工程师',
-    publicKey: 1515
   }
 ];
 
