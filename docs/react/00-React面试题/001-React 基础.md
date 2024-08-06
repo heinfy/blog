@@ -34,7 +34,7 @@ A：
 
 [PureComponent + Immutable.js](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/22%20%20%E6%80%9D%E8%B7%AF%E6%8B%93%E5%B1%95%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8%EF%BC%9F.md#%E8%BF%9B%E9%98%B6%E7%8E%A9%E6%B3%95purecomponent--immutablejs)
 
-2. `**React.memo**`** 与 **`**useMemo**`
+2. `React.memo` 与 `useMemo`
 
 [函数组件的性能优化：React.memo 和 useMemo](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/22%20%20%E6%80%9D%E8%B7%AF%E6%8B%93%E5%B1%95%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8%EF%BC%9F.md#%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96reactmemo-%E5%92%8C-usememo)
 
@@ -56,9 +56,7 @@ A：
    2. 而在 react 中使用到了`Suspense` 和 `lazy`组件实现代码拆分功能
 
 ```jsx
-const johanComponent = React.lazy(() =>
-  import(/* webpackChunkName: "johanComponent" */ './component')
-);
+const johanComponent = React.lazy(() => import(/* webpackChunkName: "johanComponent" */ './component'));
 
 export const johanAsyncComponent = props => (
   <React.Suspense fallback={<Spinner />}>
@@ -71,8 +69,8 @@ export const johanAsyncComponent = props => (
    1. 在`render`方法中，使用`bind`和`render`方法中使用箭头函数这两种形式在每次组件`render`的时候都会生成新的方法实例
    2. 而`constructor`中`bind`事件与定义阶段使用箭头函数绑定这两种形式只会生成一个方法实例，性能方面会有所改善
 6. **服务端渲染**
-7. **使用 **`**React Fragment**`** 避免额外标记：**`** <></>**`
-8. **使用 **`**shouldComponentUpdate**`** 规避冗余的更新逻辑**
+7. **使用 **`React Fragment`** 避免额外标记：**` <></>`
+8. **使用 **`shouldComponentUpdate`** 规避冗余的更新逻辑**
 
 参看： [如何打造高性能的 React 应用](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/22%20%20%E6%80%9D%E8%B7%AF%E6%8B%93%E5%B1%95%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8%EF%BC%9F.md) [面试官：说说 React 性能优化的手段有哪些？ · Issue #211 · febobo/web-interview](https://github.com/febobo/web-interview/issues/211)
 
@@ -121,16 +119,40 @@ A：当我们写一个事件时 onClick={ this.fn }，事实上 fn 函数是作�
 
 A：元素的 key 作用是用于判断元素是新创建的还是被移动的，从而减少不必要的 Diff。
 
+### 1. **唯一标识**
+
+`key` 属性为每个列表项提供一个唯一标识符。这样，React 能够准确地识别哪些元素被改变、添加或删除，从而能够进行高效的更新。
+
+```jsx
+const listItems = items.map((item) =>
+  <li key={item.id}>{item.text}</li>
+);
+```
+
+在这个例子中，每个 `li` 元素都有一个唯一的 `key`，这是 `item.id`。
+
+### 2. **提高性能**
+
+当 React 处理列表项时，如果列表项没有唯一的 `key`，React 会逐个检查每个列表项，这会导致性能下降。使用唯一的 `key`，React 可以直接找到需要更新的项，从而提高性能。
+
+### 3. **避免重新渲染**
+
+React 使用 `key` 属性来确定哪些元素已经发生变化。如果 `key` 不唯一或不正确，React 可能会错误地重新渲染整个列表，而不是只更新实际改变的元素。
+
+### 4. **帮助识别元素顺序**
+
+当列表的顺序发生变化时，`key` 属性能帮助 React 理解这种变化。例如，在排序或重新排列列表项时，`key` 可以确保元素的状态保持一致。
+
 ## Q：说说对 React refs 的理解？应用场景？
 
 A：ref 可以访问 DOM 元素或者某个组件实例。
 
-| ref | state |
-| --- | --- |
-| useRef(initialValue) 返回 { current: initialValue } | useState(initialValue) 返回 state 变量的当前值和一个 state 设置函数 ( [value, setValue]) |
-| 更改时不会触发重新渲染 | 更改时触发重新渲染 |
-| 可变 —— 你可以在渲染过程之外修改和更新 current 的值。 | “不可变” —— 你必须使用 state 设置函数来修改 state 变量，从而排队重新渲染。 |
-| 不应在渲染期间读取（或写入） current 值。 | 你可以随时读取 state。但是，每次渲染都有自己不变的 state 快照。 |
+| ref                                                   | state                                                                                    |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| useRef(initialValue) 返回 { current: initialValue }   | useState(initialValue) 返回 state 变量的当前值和一个 state 设置函数 ( [value, setValue]) |
+| 更改时不会触发重新渲染                                | 更改时触发重新渲染                                                                       |
+| 可变 —— 你可以在渲染过程之外修改和更新 current 的值。 | “不可变” —— 你必须使用 state 设置函数来修改 state 变量，从而排队重新渲染。               |
+| 不应在渲染期间读取（或写入） current 值。             | 你可以随时读取 state。但是，每次渲染都有自己不变的 state 快照。                          |
 
 官方文档：
 
