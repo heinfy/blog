@@ -1,3 +1,5 @@
+# React 问题
+
 ## Q：JSX 的本质是什么，它和 JS 之间到底是什么关系？
 
 A：JSX 是 JavaScript 的一种语法扩展，它和模板语言很接近，但是它充分具备 JavaScript 的能力。
@@ -19,18 +21,22 @@ A：JSX 实际上是在调用 `React.createElement`方法。`React.createElement
 
 ## Q：为什么 React 16 要更改组件的生命周期？
 
-A：现象： Mounting 阶段：组件的初始化渲染（挂载） ![image.png](https://cdn.nlark.com/yuque/0/2024/png/35816928/1704265364412-2a78e80a-3461-49a1-9691-66f2e3ecf5bb.png#averageHue=%23ef987f&clientId=u18e25fce-f492-4&from=paste&height=354&id=u46101fcf&originHeight=354&originWidth=459&originalType=binary&ratio=1&rotation=0&showTitle=false&size=41567&status=done&style=none&taskId=u25ca5034-3688-45ae-a9a9-43bd47d59eb&title=&width=459)
+A：现象： Mounting 阶段：组件的初始化渲染（挂载）
+
+![image-20240807170513089](assets/image-20240807170513089.png)
 
 ```javascript
 /* 1. 静态方法 */
-/* 2. 分别代表当前组件接收到的来自父组件的 props 和当前组件自身的 state */
+/* 2. 2个参数分别代表当前组件接收到的来自父组件的 props 和当前组件自身的 state */
 /* 3. 一个对象格式的返回值或者 null */
-static getDerivedStateFromProps() {
+static getDerivedStateFromProps(nextProps, prevState) {
   return null
 }
 ```
 
-Updating 阶段：组件的更新 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/35816928/1704266105624-8975d369-01a6-4274-8aaf-558afae8419e.png#averageHue=%23f0987f&clientId=u18e25fce-f492-4&from=paste&height=317&id=u53e13336&originHeight=317&originWidth=696&originalType=binary&ratio=1&rotation=0&showTitle=false&size=59007&status=done&style=none&taskId=ua270199d-c22f-408a-be53-27b6e4cb2fb&title=&width=696)
+Updating 阶段：组件的更新
+
+![image-20240807171155900](assets/image-20240807171155900.png)
 
 ```javascript
 getSnapshotBeforeUpdate(prevProps, prevState) {
@@ -41,7 +47,13 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 }
 ```
 
-**getSnapshotBeforeUpdate 的返回值会作为第三个参数给到 componentDidUpdate。它的执行时机是在 render 方法之后，真实 DOM 更新之前**。在这个阶段里，我们可以**同时获取到更新前的真实 DOM 和更新前后的 state&props 信息。** Unmounting 阶段：组件的卸载 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/35816928/1704266413025-1cd805b1-3531-42aa-a674-d2c2a0909b76.png#averageHue=%23f08769&clientId=u18e25fce-f492-4&from=paste&height=139&id=u0ec618a8&originHeight=139&originWidth=696&originalType=binary&ratio=1&rotation=0&showTitle=false&size=14841&status=done&style=none&taskId=u01eff2d2-5d33-4406-a4cc-c014f896a25&title=&width=696) 卸载阶段的生命周期与 React 15 完全一致。总结： **React 16 的变更主要涉及引入 Fiber 架构以及对 React 内核的重大重构。这些更改带来了一系列的好处，包括性能的改进、异步渲染的支持以及更精细的控制。**以下是一些主要的原因：
+**getSnapshotBeforeUpdate 的返回值会作为第三个参数给到 componentDidUpdate。它的执行时机是在 render 方法之后，真实 DOM 更新之前**。在这个阶段里，我们可以**同时获取到更新前的真实 DOM 和更新前后的 state&props 信息。**
+
+Unmounting 阶段：组件的卸载
+
+![image-20240807171309787](assets/image-20240807171309787.png)
+
+卸载阶段的生命周期与 React 15 完全一致。总结： **React 16 的变更主要涉及引入 Fiber 架构以及对 React 内核的重大重构。这些更改带来了一系列的好处，包括性能的改进、异步渲染的支持以及更精细的控制。**以下是一些主要的原因：
 
 1. **Fiber 架构**： React 16 引入了 Fiber 架构，这是一种基于链表的新的调度算法。Fiber 架构使得 React 能够更好地处理大型和复杂的应用程序，支持异步渲染，使得在渲染过程中能够中断、终止和恢复操作。这有助于提高应用的性能和响应性。
 2. **异步渲染的支持**： 为了支持异步渲染，React 16 引入了新的生命周期方法，如 getDerivedStateFromProps 和 getSnapshotBeforeUpdate。这些方法提供更细粒度的控制点，使得开发者能够更灵活地管理组件状态和副作用。

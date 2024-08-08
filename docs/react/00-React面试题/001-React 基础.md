@@ -1,10 +1,12 @@
-A： **函数组件为什么没有实例？**
+# React 基础问题
 
-在 React 中，函数组件是没有实例的。这与类组件不同，类组件实例是通过 `new` 关键字创建的，而函数组件只是一个函数。当函数组件被调用时，它会返回一个 React 元素（`virtual DOM`）的描述。React 使用这个描述来构建真实的 DOM，并且在需要时进行更新。
+## Q：函数组件为什么没有实例？
+
+A：在 React 中，函数组件是没有实例的。这与类组件不同，类组件实例是通过 `new` 关键字创建的，而函数组件只是一个函数。当函数组件被调用时，它会返回一个 React 元素（`virtual DOM`）的描述。React 使用这个描述来构建真实的 DOM，并且在需要时进行更新。
 
 尽管函数组件没有实例，但是你可以使用 `useRef、useEffect、useState` 等 React 钩子来在函数组件中管理状态、引用 DOM 元素等。
 
-Q：react 为什么要引入 Fiber 架构？解决了什么问题？
+## Q：react 为什么要引入 Fiber 架构？解决了什么问题？
 
 A： **JavaScript 线程和渲染线程必须是互斥的**：这两个线程不能够穿插执行，必须串行。
 
@@ -124,9 +126,7 @@ A：元素的 key 作用是用于判断元素是新创建的还是被移动的�
 `key` 属性为每个列表项提供一个唯一标识符。这样，React 能够准确地识别哪些元素被改变、添加或删除，从而能够进行高效的更新。
 
 ```jsx
-const listItems = items.map((item) =>
-  <li key={item.id}>{item.text}</li>
-);
+const listItems = items.map(item => <li key={item.id}>{item.text}</li>);
 ```
 
 在这个例子中，每个 `li` 元素都有一个唯一的 `key`，这是 `item.id`。
@@ -318,30 +318,61 @@ A：React 将 Virtual DOM 树转换成 actual DOM 树的最少操作的过程称
 
 参看： [diff 算法](https://github.com/heinfy/react-learn/blob/main/04-%E6%B7%B1%E5%85%A5%20REACT%20%E6%8A%80%E6%9C%AF%E6%A0%88/03%E7%AB%A0-5.diff%E7%AE%97%E6%B3%95.md) [https://github.com/febobo/web-interview/issues/208](https://github.com/febobo/web-interview/issues/208)
 
-传统的树比较算法（如完全递归比较）的复杂度通常是 𝑂 (𝑛^3)，其中 n 是树中节点的数量。这是因为该算法可能需要对树中的每个节点进行多次遍历和比较。以下是详细的解释：
+未优化的树比较算法为何会达到 O(n3)O(n^3)O(n3) 的时间复杂度。
 
-_复杂度分析_
+### 未优化算法复杂度
 
-1. 节点间比较：
+在最坏情况下，每个节点的比较都可能导致全树遍历。考虑以下几点：
 
-- 对于树 A 的每个节点，都需要与树 B 的每个节点进行比较。假设树 A 和树 B 都有 n 个节点，那么初步的比较就有 𝑂(𝑛^2) 的复杂度。
+1. **全树遍历**：假设有两棵树 T1 和 T2，每棵树都有 n 个节点。我们需要比较 T1和 T2 的每个节点。
+2. **子树对比**：对于每对节点的比较，还需要递归比较其所有子节点。这意味着每个节点的比较操作会递归到其所有子节点。
 
-2. 递归对子树进行比较：
+具体步骤如下：
 
-- 在每次比较节点时，还需要对比其子树，这需要递归地对子树进行相同的比较操作。
-- 如果我们假设每个节点有 m 个子节点，那么在最坏情况下，每个节点的每个子节点都需要进行比较，这样就导致了递归深度增加。
+#### 步骤 1：比较根节点
 
-综合上述两点，在最坏情况下，对于树中的每个节点，我们都需要对子树进行全面的比较，这会导致复杂度的立方增长：
+- 比较 T1 和 T2 的根节点，时间复杂度为 O(1)。
 
-𝑂(𝑛)（节点数）×𝑂(𝑛)（比较每个节点的子树）×𝑂(𝑛)（递归深度）=𝑂(𝑛^3)
+#### 步骤 2：比较根节点的子节点
+
+- 假设根节点有 k 个子节点。需要比较这 k 个子节点的所有可能组合（笛卡尔积），时间复杂度为 O(k^2)。
+
+#### 步骤 3：递归比较每个子节点
+
+- 对于每对子节点，需要递归地比较其子节点。假设每个子节点的子树有大约 n/k 个节点，那么这部分的时间复杂度为 O((n/k)^2)。
+- 由于有 kkk 对这样的子节点组合，总时间复杂度为 O(k^2⋅(n/k)^2)=O(n^2)。
+
+#### 总复杂度
+
+- 当我们将这种递归过程应用到整个树时，每一层的节点对比都会产生 O(n2)O(n^2)O(n2) 的复杂度。
+- 整棵树有 O(n) 层，因此总体时间复杂度为 O(n^2⋅n)=O(n^3)。
+
+#### 示例说明
+
+考虑一个最简单的例子，有两棵完全二叉树，每棵树有 n 个节点：
+
+1. 比较根节点 O(1)。
+2. 比较根节点的子节点，假设每个根节点有 2 个子节点，需要比较 2^2 = 4 次。
+3. 继续递归比较每对子节点的子节点，时间复杂度会指数增长。
+4. 因为每层的比较次数都是对上一层的平方，并且树的高度约为 log(n)，每层的比较时间复杂度为 O(n^2)。
+
+最终，这些层的总比较次数的和会达到 OO(n^3)。
+
+### 总结
+
+在未优化的树比较算法中，每个节点的比较需要递归地遍历和比较整个子树，这导致每层的比较次数呈指数增长，最终导致总时间复杂度为 O(n^3)。通过优化，如 React 中的 diff 算法，这种复杂度被大大降低到 O(n)。
 
 ## Q：说说你在 React 项目是如何捕获错误的？
 
-A：为了解决出现的错误导致整个应用崩溃的问题，react16 引用了**错误边界**的概念。当抛出错误后，使用 `static getDerivedStateFromError()` 渲染备用 UI ，使用 `componentDidCatch()` 打印错误信息。参看： [错误边界 – React](https://zh-hans.legacy.reactjs.org/docs/error-boundaries.html#gatsby-focus-wrapper) [面试官：说说你在 React 项目是如何捕获错误的？ · Issue #216 · febobo/web-interview](https://github.com/febobo/web-interview/issues/216)
+A：为了解决出现的错误导致整个应用崩溃的问题，React 16 引用了**错误边界**的概念。当抛出错误后，使用 `static getDerivedStateFromError()` 渲染备用 UI ，使用 `componentDidCatch()` 打印错误信息。参看： [错误边界 – React](https://zh-hans.legacy.reactjs.org/docs/error-boundaries.html#gatsby-focus-wrapper) [面试官：说说你在 React 项目是如何捕获错误的？ · Issue #216 · febobo/web-interview](https://github.com/febobo/web-interview/issues/216)
 
 ## Q：说说 React Jsx 转换成真实 DOM 过程？
 
-A：JSX 的本质是`React.createElement`这个`JavaScript`调用的语法糖： ![](https://cdn.nlark.com/yuque/0/2023/jpeg/35816928/1687330291539-879e840b-d0ed-4b9d-bea7-903c9c9025c7.jpeg) `React.createElement` 函数就是将开发者代码转化为 `ReactElement` 函数所需的参数，相当于一个中转函数。 `ReactElement` 的源码：
+A：JSX 的本质是`React.createElement`这个`JavaScript`调用的语法糖： 
+
+![yuque_mind](assets/yuque_mind.jpeg)
+
+ `React.createElement` 函数就是将开发者代码转化为 `ReactElement` 函数所需的参数，相当于一个中转函数。 `ReactElement` 的源码：
 
 ```javascript
 const ReactElement = function (type, key, ref, self, source, owner, props) {
@@ -369,13 +400,34 @@ const ReactElement = function (type, key, ref, self, source, owner, props) {
 
 ## Q：说说 React 服务端渲染怎么做？原理是什么？
 
-A：在 server 端通过 `react-dom` 的`renderToString`方法，负责把`React`组件解析成`html`。事件处理的方法，是无法在服务端完成，因此需要将组件代码在浏览器中再执行一遍，这种**服务器端和客户端共用一套代码的方式就称之为同构。** 将模板中的脚本打包引入到 HTML 中，要用到 `ReactDom.hydrateRoot`
+A：React 服务端渲染（Server-Side Rendering，SSR）是一种在服务器上预渲染 React 组件并将生成的 HTML 发送到客户端的技术。客户端接收到 HTML 后，可以在其上继续执行 React 的客户端渲染。SSR 的主要目的是提高首屏加载速度和搜索引擎优化（SEO）。以下是 React 服务端渲染的实现方式及其原理。
 
 > 如果需要在服务端发起请求的话，需要使用全局的 store。当请求路由的时候，在服务器端执行 store 的方法，然后将数据注入的组件中；组件也可以通过 props 获取 store 的 reducer 在客户端执行。
 
+原理：
+
+1. **服务端渲染**：
+   - 当客户端发送请求时，服务器会使用 `ReactDOMServer.renderToString` 方法将 React 组件渲染为字符串形式的 HTML。
+   - 生成的 HTML 被插入到一个完整的 HTML 模板中，并发送回客户端。
+2. **客户端复用**：
+   - 客户端接收到完整的 HTML 后，会使用 React 的 `hydrate` 方法在已有的 HTML 上绑定事件处理器等，使页面变得可交互。
+   - `hydrate` 方法与 `render` 方法类似，但它会复用服务端生成的 HTML，而不是重新渲染整个页面。
+
+优点：
+
+- **提高首屏加载速度**：由于页面 HTML 在服务器上生成，客户端可以更快地显示页面内容。
+- **改善 SEO**：搜索引擎可以更好地索引预渲染的 HTML 内容。
+- **提升用户体验**：用户可以更快地看到页面内容，提高用户体验。
+
+注意事项：
+
+- **服务器负载**：SSR 会增加服务器的负载，因为每个请求都需要在服务器上渲染页面。
+- **复杂性增加**：需要在服务器和客户端之间共享代码，并处理两者之间的差异。
+- **数据获取**：需要考虑在服务端获取数据并传递给客户端，以确保客户端和服务器渲染一致。
+
 参看： [说说 React 服务端渲染怎么做？原理是什么？](https://github.com/febobo/web-interview/issues/217) [掘金小册](https://juejin.cn/book/7137945369635192836/section/7141179707340357673)
 
-## Q：TODO 说说 React render 方法在什么时候会被触发？原理？
+## Q：React render 方法在什么时候会被触发？原理？
 
 A：在 render 过程中，React 将新调用的 render 函数返回的树与旧版本的树进行比较，这一步是决定如何更新 DOM 的必要步骤，然后进行 diff 比较，更新 DOM 树。拆解`ReactDOM.render`调用栈：
 
@@ -397,7 +449,48 @@ ReactDOM.createRoot 开启的渲染链路与 ReactDOM.render 有何不同呢？
 
 ## Q：剖析 Fiber 架构下 Concurrent 模式的实现原理
 
-A：时间切片的实现原理：React 会根据浏览器的帧率，计算出时间切片的大小，并结合当前时间计算出每一个切片的到期时间。在 workLoopConcurrent 中，while 循环每次执行前，会调用 shouldYield 函数来询问当前时间切片是否到期，若已到期，则结束循环、出让主线程的控制权。参看： [Scheduler——“时间切片”与“优先级”的幕后推手](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/16%20%20%E5%89%96%E6%9E%90%20Fiber%20%E6%9E%B6%E6%9E%84%E4%B8%8B%20Concurrent%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.md) [剖析 Fiber 架构下 Concurrent 模式的实现原理](https://www.bilibili.com/video/BV12r4y1r7vL?p=18)
+React Fiber 架构引入了一个新的调度引擎，使 React 能够更高效地管理更新，并实现了 Concurrent 模式（并发模式）。Concurrent 模式允许 React 将渲染工作拆分成更小的任务，并优先处理用户交互等高优先级任务，从而提高应用的响应速度和流畅性。
+
+### Fiber 架构概述
+
+React Fiber 是一种基于链表的数据结构，每个 Fiber 节点表示一个 React 元素。这种结构允许 React 更灵活地管理和调度渲染工作。与之前的递归调用栈不同，Fiber 架构使得渲染过程可以被中断和恢复。
+
+### Concurrent 模式实现原理
+
+Concurrent 模式的核心在于让渲染过程可中断和可恢复，这主要通过以下几个步骤实现：
+
+1. **任务拆分**：
+   - 将渲染工作拆分成多个小任务（单元工作单元，Unit of Work），这些任务可以独立完成。
+   - 每个任务在执行一定时间后可以被中断，允许 React 检查是否有更高优先级的任务需要处理。
+2. **时间切片**：
+   - 使用浏览器提供的 `requestIdleCallback` 和 `requestAnimationFrame` 等 API，将渲染工作分配到浏览器的空闲时间段。
+   - React 会在每个时间切片中执行一部分渲染工作，并在必要时中断和恢复这些工作。
+   - React 会根据浏览器的帧率，计算出时间切片的大小，并结合当前时间计算出每一个切片的到期时间。在 workLoopConcurrent 中，while 循环每次执行前，会调用 shouldYield 函数来询问当前时间切片是否到期，若已到期，则结束循环、出让主线程的控制权。
+3. **优先级调度**：
+   - React 根据任务的优先级进行调度，高优先级任务（如用户输入和动画）会优先处理。
+   - 低优先级任务（如不重要的渲染更新）会在空闲时间段进行处理。
+4. **任务中断与恢复**：
+   - 使用 Fiber 节点链表结构，使得渲染过程可以被中断和恢复。
+   - React 在每次渲染过程中保存当前的 Fiber 节点，当任务被中断时，可以从该节点继续渲染。
+5. **可恢复渲染**：
+   - 当一个任务被中断时，React 会保存当前的渲染状态，并在下一个空闲时间段继续执行未完成的任务。
+   - 通过这种方式，React 能够高效地处理长时间运行的渲染任务，而不会阻塞主线程。
+
+### 具体实现步骤
+
+1. **初始化和调度**：
+   - React 在初始化时创建根 Fiber 节点，并开始调度渲染任务。
+   - 调度器根据优先级决定哪些任务需要优先执行。
+2. **任务执行**：
+   - React 在每个时间切片中执行一部分渲染工作，通过遍历 Fiber 节点链表来进行递归更新。
+3. **任务中断**：
+   - 当时间切片结束或有更高优先级的任务时，React 会中断当前任务并保存状态。
+   - 使用浏览器的调度 API（如 `requestIdleCallback`）来确定下一次可执行任务的时间。
+4. **任务恢复**：
+   - 在下一个空闲时间段，React 恢复中断的任务，从上次中断的 Fiber 节点继续执行。
+   - 通过这种方式，React 可以在不阻塞主线程的情况下完成复杂的渲染任务。
+
+参看： [Scheduler——“时间切片”与“优先级”的幕后推手](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/16%20%20%E5%89%96%E6%9E%90%20Fiber%20%E6%9E%B6%E6%9E%84%E4%B8%8B%20Concurrent%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.md) [剖析 Fiber 架构下 Concurrent 模式的实现原理](https://www.bilibili.com/video/BV12r4y1r7vL?p=18)
 
 ## Q：ReactDOM.createPortal 怎么用？
 
@@ -494,9 +587,17 @@ css：
 
 `React.lazy(() => import('./OtherComponent'))`
 
-- webpack 遇到 import() 方法时，会自动进行代码分割，返回一个 Promise 对象；`React.lazy`最终返回了一个包含一个 then 方法的对象。
-- 当加载该组件时，调用 then 方法，会发起异步请求下载 chunk，并且抛出一个 thenable 的错误，\_reactStatus 为 Pending；这时 Suspense 组件就起作用了，当监听到错误后，就将 fallback 的值展示出来。
-- 当异步请求完全后，lazy 组件对应的 fiber 节点自身状态变为 Resolved，正常渲染组件。
+`React.lazy` 的实现依赖于 JavaScript 的动态 `import()` 语法和 `Promise`。其基本原理如下：
+
+1. **动态导入**：
+   - `React.lazy` 接受一个返回 `Promise` 的函数，这个函数使用 `import()` 语法动态导入组件。动态导入的组件不会在应用初始加载时包含在主包中，而是在实际需要时才被加载。
+2. **Promise 处理**：
+   - `React.lazy` 将动态导入的组件包装在一个 `Promise` 中。当组件被渲染时，如果该组件尚未加载完成，React 会等待 `Promise` 解析。
+3. **Suspense 组件**：
+   - `Suspense` 组件用于捕获 `React.lazy` 的加载状态。在 `Promise` 解析之前，`Suspense` 会显示 `fallback` 属性指定的回退 UI（如加载指示器）。
+   - 一旦 `Promise` 解析成功，`Suspense` 会渲染懒加载的组件。
+4. **错误边界**：
+   - 如果 `Promise` 解析失败，例如网络错误导致组件无法加载，错误会被抛出，可以使用错误边界组件来捕获并处理这些错误。
 
 参看： [React.Lazy 懒加载解析](https://zhuanlan.zhihu.com/p/513556000)
 
