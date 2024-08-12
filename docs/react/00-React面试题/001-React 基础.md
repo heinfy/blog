@@ -76,21 +76,6 @@ export const johanAsyncComponent = props => (
 
 参看： [如何打造高性能的 React 应用](https://github.com/heinfy/react-learn/blob/main/03-React%20%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6%E6%95%99%E7%A8%8B/22%20%20%E6%80%9D%E8%B7%AF%E6%8B%93%E5%B1%95%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8%EF%BC%9F.md) [面试官：说说 React 性能优化的手段有哪些？ · Issue #211 · febobo/web-interview](https://github.com/febobo/web-interview/issues/211)
 
-## Q：说说 Real DOM 和 Virtual DOM 的区别？优缺点？
-
-A：Real DOM 就是文档对象模型，Virtual DOM 本质上是以 JavaScript 对象形式存在的对 DOM 的描述。Real DOM 的属性和 Virtual DOM 对象的节点一一对应。
-
-Virtual DOM 的优点：
-
-1. 结合 JSX 简单方便
-2. 能够有效避免真实 DOM 树的频繁更新，减少多次引起的回流和重绘，提交性能
-3. 跨平台
-
-Virtual DOM 的缺点：
-
-1. 渲染页面的时候多了一层 Virtual DOM 层，在页面重新渲染的时候，和 Diff 的节点有关
-2. 首屏渲染性能会有影响
-
 ## Q：说说 React 生命周期有哪些不同阶段？
 
 - [react 的生命周期（图示）\_react 生命周期图解\_YanAhao 的博客-CSDN 博客](https://blog.csdn.net/YanAhao/article/details/108319723)
@@ -324,7 +309,7 @@ A：React 将 Virtual DOM 树转换成 actual DOM 树的最少操作的过程称
 
 在最坏情况下，每个节点的比较都可能导致全树遍历。考虑以下几点：
 
-1. **全树遍历**：假设有两棵树 T1 和 T2，每棵树都有 n 个节点。我们需要比较 T1和 T2 的每个节点。
+1. **全树遍历**：假设有两棵树 T1 和 T2，每棵树都有 n 个节点。我们需要比较 T1 和 T2 的每个节点。
 2. **子树对比**：对于每对节点的比较，还需要递归比较其所有子节点。这意味着每个节点的比较操作会递归到其所有子节点。
 
 具体步骤如下：
@@ -368,11 +353,11 @@ A：为了解决出现的错误导致整个应用崩溃的问题，React 16 引�
 
 ## Q：说说 React Jsx 转换成真实 DOM 过程？
 
-A：JSX 的本质是`React.createElement`这个`JavaScript`调用的语法糖： 
+A：JSX 的本质是`React.createElement`这个`JavaScript`调用的语法糖：
 
 ![yuque_mind](assets/yuque_mind.jpeg)
 
- `React.createElement` 函数就是将开发者代码转化为 `ReactElement` 函数所需的参数，相当于一个中转函数。 `ReactElement` 的源码：
+`React.createElement` 函数就是将开发者代码转化为 `ReactElement` 函数所需的参数，相当于一个中转函数。 `ReactElement` 的源码：
 
 ```javascript
 const ReactElement = function (type, key, ref, self, source, owner, props) {
