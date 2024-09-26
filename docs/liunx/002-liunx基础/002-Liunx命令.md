@@ -10,18 +10,288 @@ sidebar_position: 2
 custom_edit_url: null
 ---
 
-## 帮助信息
+## 系统信息
 
-- `command --help` 或者 `man command`
+### 1. top
+
+top 命令用于实时监视系统进程和资源使用情况。
 
 ```bash
-# man 的操作键：
-# 空格键 显示手册页的下一屏
-# Enter 键 一次滚动手册页的一行
-# b 回滚一屏
-# f 前滚一屏
-# q 退出
-# /word 搜索 word 字符串
+top
+```
+
+常用快捷键：
+
+- h: 显示帮助
+- q: 退出
+- M: 按内存使用排序
+- P: 按 CPU 使用排序
+- 1: 显示每个 CPU 的使用情况
+
+### 2. free
+
+free 命令用于显示系统的内存使用情况。
+
+```bash
+free -hm
+```
+
+选项说明：
+
+- h: 以人类可读的格式（如 MB 或 GB）显示。
+
+### 3. ps
+
+`ps aux` 命令用于在 Linux 和类 Unix 系统中显示当前运行的所有进程的信息。它的各部分含义如下：
+
+ps: 代表 "process status"，用于显示当前运行的进程。
+
+- a: 显示所有用户的进程，包括其他用户的进程，而不仅仅是当前用户的。
+- u: 以用户为中心的格式显示进程，包括每个进程的用户、CPU 和内存使用情况等信息。
+- x: 显示没有控制终端的进程，这包括后台运行的进程。
+
+综合起来，ps aux 会列出系统中所有正在运行的进程及其相关信息，如用户、PID（进程ID）、CPU 和内存使用率、进程状态等。
+
+```bash
+ps aux | grep nginx
+```
+
+### 4. systemctl
+
+#### 管理服务
+
+```bash
+# 启动服务：
+sudo systemctl start <service_name>
+
+# 停止服务：
+sudo systemctl stop <service_name>
+
+# 重启服务：
+sudo systemctl restart <service_name>
+
+# 查看服务状态：
+sudo systemctl status <service_name>
+
+```
+
+#### 管理开机启动
+
+```bash
+# 设置服务为开机自启：
+sudo systemctl enable <service_name>
+
+# 禁用服务的开机自启：
+sudo systemctl disable <service_name>
+```
+
+#### 管理系统状态
+
+```bash
+# 查看当前运行的服务：
+systemctl list-units --type=service
+
+# 查看所有已安装的服务：
+systemctl list-unit-files --type=service
+```
+
+#### 控制系统电源
+
+```bash
+# 重启系统：
+sudo systemctl reboot
+
+# 关机：
+sudo systemctl poweroff
+```
+
+#### 管理挂载点和设备
+
+```bash
+# 挂载文件系统：
+sudo systemctl start <mount_point>
+
+# 卸载文件系统：
+sudo systemctl stop <mount_point>
+```
+
+#### 示例命令
+
+```bash
+# 查看 nginx 服务状态：
+sudo systemctl status nginx
+
+# 启动 nginx 服务并设置为开机自启：
+sudo systemctl start nginx
+sudo systemctl enable nginx
+```
+
+
+## 用户权限相关命令
+
+chmod 是 Linux 和 Unix 系统中用于修改文件和目录权限的命令。它的全称是 "change mode"。权限控制决定了谁可以读（read）、写（write）或执行（execute）文件或目录。
+
+基本语法：
+
+```bash
+chmod [选项] 权限 文件名
+```
+
+### 权限表示法：
+
+权限可以通过两种方式表示：符号法 和 数字法。
+
+1. 符号法：
+
+符号法表示权限的修改方式。
+
+用户类别：
+
+- u：文件的拥有者（user）
+- g：文件所在组（group）
+- o：其他人（others）
+- a：所有人（all，即 u、g 和 o）
+
+权限类型：
+
+- r：读取权限（read）
+- w：写入权限（write）
+- x：执行权限（execute）
+
+操作符：
+
+- +：增加权限
+- -：移除权限
+- =：设置权限
+
+示例：
+
+```bash
+# 给文件所有者增加执行权限：
+chmod u+x file.txt
+
+# 给组和其他用户移除写权限：
+chmod go-w file.txt
+```
+
+### 2. 数字法：
+
+数字法用八进制数表示权限，具体数值如下：
+
+- 4：读取权限（read）
+- 2：写入权限（write）
+- 1：执行权限（execute）
+
+每个用户类别的权限是这些数值的组合：
+
+- 7（4+2+1）：读、写、执行权限
+- 6（4+2）：读和写权限
+- 5（4+1）：读和执行权限
+- 4：只有读权限
+
+权限的排列：
+
+文件的权限通常由三个部分组成：
+
+- 用户（u）：文件所有者的权限
+- 组（g）：文件所在组的权限
+- 其他人（o）：除所有者和组以外其他人的权限
+
+示例：
+
+```bash
+# 给文件 file.txt 设置用户为 rwx，组为 rx，其他人为 r 的权限：
+chmod 754 file.txt
+# 对应的权限是：rwxr-xr--
+```
+
+## 系统信息相关命令
+
+```bash
+# 时间和日期
+data
+cal # cal -y
+
+## 磁盘信息
+df -h # disk free 显示磁盘剩余空间
+du -h [目录名] # disk usage 显示目录下的文件大小
+
+# 进程信息
+ps aux # process status 查看进程的详细状况
+
+# a 显示终端上的所有进程，包括其他用户的进程
+# u 显示进程的详细状态
+# x 显示没有控制终端的进程
+
+top # 动态显示运行中的进程并且排序，要退出 top 可以直接输入 q
+
+kill [-9] 进程代号 # 终止指定代号的进程，-9 表示强行终止
+# 使用 kill 命令时，最好只终止由当前用户开启的进程，而不要终止 root 身份开启的进程，否则可能导致系统崩溃
+```
+
+## 打包压缩
+
+### zip 和 tar
+
+```bash
+# zip 和 unzip 命令
+zip [选项] 压缩包.zip 源文件1 源文件2 源文件3
+-r 压缩目录
+unzip [选项] 压缩包名
+-d 指定解压缩位置 # unzip -d /tmp/abc/ 压缩包名
+```
+
+`tar [选项] [-f 压缩包名.tar] 源文件或目录`，tar 只负责打包文件，但不压缩
+
+```bash
+# 打包文件：
+tar -cvf 打包文件.tar 被打包文件1/路径 被打包文件2/路径 ...
+tar -cvf newfile.tar oldfile
+
+# 解包文件
+tar -xvf 打包文件.tar
+tar -xvf  newfile.tar
+
+# -c 生成档案文件，创建打包文件
+# -x 解开档案文件
+# -v 列出归档解档的详细过程，显示进度
+# -f 指定档案文件名称，f 后面一定是 .tar 文件，所以必须放选项最后
+```
+
+### tar 和 bzip2
+
+**bzip2 命令不能压缩目录，**用 `bzip2` 压缩 `tar` 打包后的文件，其扩展名一般用 `.tar.bz2`
+
+```bash
+bzip2 [选项] 源文件
+# -d 解压缩
+# -k 解压缩或压缩时，保留源文件
+# -v 显示压缩的详细信息
+
+# 压缩文件
+# tar -j 压缩和解压缩 '.tar.bz2'
+tar -jcvf 打包文件.tar.bz2 被压缩的文件／路径...
+
+# 解压缩文件
+tar -jxvf 打包文件.tar.bz2
+```
+
+### tar 和 gzip
+
+gzip 压缩 tar 打包后的文件，其扩展名一般用 `.tar.gz`
+
+```bash
+# -z 压缩和解压缩 '.tar.gz'
+# -C 解压缩到指定目录，注意：要解压缩的目录必须存在
+
+# 压缩文件
+tar -zcvf 打包文件.tar.gz 被压缩的文件／路径...
+
+# 解压缩文件
+tar -zxvf 打包文件.tar.gz
+
+# 解压缩到指定路径
+tar -zxvf 打包文件.tar.gz -C 目标路径
 ```
 
 ## 文件目录命令
@@ -209,130 +479,11 @@ Host 别名名称
 ssh 别名名称
 ```
 
-## 用户权限相关命令
-
-## 系统信息相关命令
-
-```bash
-# 时间和日期
-data
-cal # cal -y
-
-## 磁盘信息
-df -h # disk free 显示磁盘剩余空间
-du -h [目录名] # disk usage 显示目录下的文件大小
-
-# 进程信息
-ps aux # process status 查看进程的详细状况
-
-# a 显示终端上的所有进程，包括其他用户的进程
-# u 显示进程的详细状态
-# x 显示没有控制终端的进程
-
-top # 动态显示运行中的进程并且排序，要退出 top 可以直接输入 q
-
-kill [-9] 进程代号 # 终止指定代号的进程，-9 表示强行终止
-# 使用 kill 命令时，最好只终止由当前用户开启的进程，而不要终止 root 身份开启的进程，否则可能导致系统崩溃
-```
-
-## 其他命令
-
-- `find` 命令
-
-通常用来在特定的目录下搜索符合条件的文件
-
-```bash
-find [路径] -name "*.py" # 查找指定路径下扩展名是 .py 的文件，包括子目录
-# 如果省略路径，表示在当前文件夹下查找
-# 之前学习的通配符，在使用 find 命令时同时可用
-```
-
-- 软链接 - 类似于 Windows 下的快捷方式
-
-`ln -s 被链接的源文件(绝对路径|位置路径) 链接文件(给快捷方式取个名字)`
-
-- 硬链接 - 类似于 Windows 下的 copy
-
-`ln 被链接的源文件(绝对路径|位置路径) 链接文件(给快捷方式取个名字)`
-
-## 打包压缩
-
-### zip 和 tar
-
-```bash
-# zip 和 unzip 命令
-zip [选项] 压缩包.zip 源文件1 源文件2 源文件3
--r 压缩目录
-unzip [选项] 压缩包名
--d 指定解压缩位置 # unzip -d /tmp/abc/ 压缩包名
-```
-
-`tar [选项] [-f 压缩包名.tar] 源文件或目录`，tar 只负责打包文件，但不压缩
-
-```bash
-# 打包文件：
-tar -cvf 打包文件.tar 被打包文件1/路径 被打包文件2/路径 ...
-tar -cvf newfile.tar oldfile
-
-# 解包文件
-tar -xvf 打包文件.tar
-tar -xvf  newfile.tar
-
-# -c 生成档案文件，创建打包文件
-# -x 解开档案文件
-# -v 列出归档解档的详细过程，显示进度
-# -f 指定档案文件名称，f 后面一定是 .tar 文件，所以必须放选项最后
-```
-
-### tar 和 bzip2
-
-**bzip2 命令不能压缩目录，**用 `bzip2` 压缩 `tar` 打包后的文件，其扩展名一般用 `.tar.bz2`
-
-```bash
-bzip2 [选项] 源文件
-# -d 解压缩
-# -k 解压缩或压缩时，保留源文件
-# -v 显示压缩的详细信息
-
-# 压缩文件
-# tar -j 压缩和解压缩 '.tar.bz2'
-tar -jcvf 打包文件.tar.bz2 被压缩的文件／路径...
-
-# 解压缩文件
-tar -jxvf 打包文件.tar.bz2
-```
-
-### tar 和 gzip
-
-gzip 压缩 tar 打包后的文件，其扩展名一般用 `.tar.gz`
-
-```bash
-# -z 压缩和解压缩 '.tar.gz'
-# -C 解压缩到指定目录，注意：要解压缩的目录必须存在
-
-# 压缩文件
-tar -zcvf 打包文件.tar.gz 被压缩的文件／路径...
-
-# 解压缩文件
-tar -zxvf 打包文件.tar.gz
-
-# 解压缩到指定路径
-tar -zxvf 打包文件.tar.gz -C 目标路径
-```
-
 ## 包安装和卸载
 
 ### 二进制包 rpm 包
 
 ```bash
-rpm -ivh 包全名 # 安装二进制包
-rpm -Uvh 包全名 # 升级
-rpm -e 包全名 # 卸载
-rpm -q 包名 # 查询安装的包
-rpm -qi 包名 # 查询安装的包信息
-rpm -ql 包名 # 查询安装的包位置
-rpm -V 包名 # 验证安装
-
 yum -y install 包名 # -y => yes
 yum -y update 包名 # -y => yes
 yum remove 包名 # 卸载
@@ -360,118 +511,37 @@ sudo apt install sl
 sudo apt install htop
 ```
 
-## 系统信息
 
-### 1. top
+## 帮助信息
 
-top 命令用于实时监视系统进程和资源使用情况。
-
-```bash
-top
-```
-
-常用快捷键：
-
-- h: 显示帮助
-- q: 退出
-- M: 按内存使用排序
-- P: 按 CPU 使用排序
-- 1: 显示每个 CPU 的使用情况
-
-### 2. free
-
-free 命令用于显示系统的内存使用情况。
+- `command --help` 或者 `man command`
 
 ```bash
-free -hm
+# man 的操作键：
+# 空格键 显示手册页的下一屏
+# Enter 键 一次滚动手册页的一行
+# b 回滚一屏
+# f 前滚一屏
+# q 退出
+# /word 搜索 word 字符串
 ```
 
-选项说明：
+## 其他命令
 
-- h: 以人类可读的格式（如 MB 或 GB）显示。
+- `find` 命令
 
-### 3. ps
-
-`ps aux` 命令用于在 Linux 和类 Unix 系统中显示当前运行的所有进程的信息。它的各部分含义如下：
-
-ps: 代表 "process status"，用于显示当前运行的进程。
-
-- a: 显示所有用户的进程，包括其他用户的进程，而不仅仅是当前用户的。
-- u: 以用户为中心的格式显示进程，包括每个进程的用户、CPU 和内存使用情况等信息。
-- x: 显示没有控制终端的进程，这包括后台运行的进程。
-
-综合起来，ps aux 会列出系统中所有正在运行的进程及其相关信息，如用户、PID（进程ID）、CPU 和内存使用率、进程状态等。
+通常用来在特定的目录下搜索符合条件的文件
 
 ```bash
-ps aux | grep nginx
+find [路径] -name "*.py" # 查找指定路径下扩展名是 .py 的文件，包括子目录
+# 如果省略路径，表示在当前文件夹下查找
+# 之前学习的通配符，在使用 find 命令时同时可用
 ```
 
-### 4. systemctl
+- 软链接 - 类似于 Windows 下的快捷方式
 
-#### 管理服务
+`ln -s 被链接的源文件(绝对路径|位置路径) 链接文件(给快捷方式取个名字)`
 
-```bash
-# 启动服务：
-sudo systemctl start <service_name>
+- 硬链接 - 类似于 Windows 下的 copy
 
-# 停止服务：
-sudo systemctl stop <service_name>
-
-# 重启服务：
-sudo systemctl restart <service_name>
-
-# 查看服务状态：
-sudo systemctl status <service_name>
-
-```
-
-#### 管理开机启动
-
-```bash
-# 设置服务为开机自启：
-sudo systemctl enable <service_name>
-
-# 禁用服务的开机自启：
-sudo systemctl disable <service_name>
-```
-
-#### 管理系统状态
-
-```bash
-# 查看当前运行的服务：
-systemctl list-units --type=service
-
-# 查看所有已安装的服务：
-systemctl list-unit-files --type=service
-```
-
-#### 控制系统电源
-
-```bash
-# 重启系统：
-sudo systemctl reboot
-
-# 关机：
-sudo systemctl poweroff
-```
-
-#### 管理挂载点和设备
-
-```bash
-# 挂载文件系统：
-sudo systemctl start <mount_point>
-
-# 卸载文件系统：
-sudo systemctl stop <mount_point>
-```
-
-#### 示例命令
-
-```bash
-# 查看 nginx 服务状态：
-sudo systemctl status nginx
-
-# 启动 nginx 服务并设置为开机自启：
-sudo systemctl start nginx
-sudo systemctl enable nginx
-```
+`ln 被链接的源文件(绝对路径|位置路径) 链接文件(给快捷方式取个名字)`
