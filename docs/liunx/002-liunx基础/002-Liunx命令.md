@@ -359,3 +359,119 @@ sudo apt install sl
 # 一个比较漂亮的查看当前进程排名的软件
 sudo apt install htop
 ```
+
+## 系统信息
+
+### 1. top
+
+top 命令用于实时监视系统进程和资源使用情况。
+
+```bash
+top
+```
+
+常用快捷键：
+
+- h: 显示帮助
+- q: 退出
+- M: 按内存使用排序
+- P: 按 CPU 使用排序
+- 1: 显示每个 CPU 的使用情况
+
+### 2. free
+
+free 命令用于显示系统的内存使用情况。
+
+```bash
+free -hm
+```
+
+选项说明：
+
+- h: 以人类可读的格式（如 MB 或 GB）显示。
+
+### 3. ps
+
+`ps aux` 命令用于在 Linux 和类 Unix 系统中显示当前运行的所有进程的信息。它的各部分含义如下：
+
+ps: 代表 "process status"，用于显示当前运行的进程。
+
+- a: 显示所有用户的进程，包括其他用户的进程，而不仅仅是当前用户的。
+- u: 以用户为中心的格式显示进程，包括每个进程的用户、CPU 和内存使用情况等信息。
+- x: 显示没有控制终端的进程，这包括后台运行的进程。
+
+综合起来，ps aux 会列出系统中所有正在运行的进程及其相关信息，如用户、PID（进程ID）、CPU 和内存使用率、进程状态等。
+
+```bash
+ps aux | grep nginx
+```
+
+### 4. systemctl
+
+#### 管理服务
+
+```bash
+# 启动服务：
+sudo systemctl start <service_name>
+
+# 停止服务：
+sudo systemctl stop <service_name>
+
+# 重启服务：
+sudo systemctl restart <service_name>
+
+# 查看服务状态：
+sudo systemctl status <service_name>
+
+```
+
+#### 管理开机启动
+
+```bash
+# 设置服务为开机自启：
+sudo systemctl enable <service_name>
+
+# 禁用服务的开机自启：
+sudo systemctl disable <service_name>
+```
+
+#### 管理系统状态
+
+```bash
+# 查看当前运行的服务：
+systemctl list-units --type=service
+
+# 查看所有已安装的服务：
+systemctl list-unit-files --type=service
+```
+
+#### 控制系统电源
+
+```bash
+# 重启系统：
+sudo systemctl reboot
+
+# 关机：
+sudo systemctl poweroff
+```
+
+#### 管理挂载点和设备
+
+```bash
+# 挂载文件系统：
+sudo systemctl start <mount_point>
+
+# 卸载文件系统：
+sudo systemctl stop <mount_point>
+```
+
+#### 示例命令
+
+```bash
+# 查看 nginx 服务状态：
+sudo systemctl status nginx
+
+# 启动 nginx 服务并设置为开机自启：
+sudo systemctl start nginx
+sudo systemctl enable nginx
+```
