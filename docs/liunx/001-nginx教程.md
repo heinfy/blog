@@ -41,45 +41,78 @@ Nginx 专门为性能优化而开发，性能是其最重要的考量，实际�
 
 ## nginx 安装、常用命令和配置文件
 
-### nginx 常用命令
-
-- 启动 nginx
+### nginx 安装
 
 ```bash
-cd /usr/local/nginx/sbin # 切换目录到/usr/local/nginx/sbin下面
-./nginx # 启动 nginx
+# 更新系统
+yum update
+
+# 安装 EPEL 仓库
+yum install epel-release
+
+# 安装 Nginx
+yum install nginx
+
+# 启动 Nginx
+systemctl start nginx
+
+# 设置 Nginx 开机自启
+systemctl enable nginx
+```
+
+### nginx 常用命令
+
+
+在 CentOS 系统中，可以使用以下命令来查看 Nginx 的状态：
+
+1. **查看 Nginx 运行状态**：
+
+```bash
+systemctl status nginx
+
+systemctl restart nginx
+```
+
+这条命令会显示 Nginx 的当前状态，包括是否正在运行、是否已启用开机启动等。
+
+2. **仅查看 Nginx 是否正在运行**：
+
+```bash
+systemctl is-active nginx
+
 ps -ef | grep nginx # 查看nginx服务是否启动成功
 ```
 
-- 查看开放的端口
+3. **检查 Nginx 是否已启用开机启动**：
 
 ```bash
-firewall-cmd --list-all
+systemctl is-enabled nginx
 ```
 
-- 设置开放的端口
+4. **查看 Nginx 的进程**：
 
 ```bash
-firewall-cmd --add-service=http -permanent
-sudo firewall-cmd --add-port=80/tcp --permanent # 添加 80 端口
-firewall-cmd --reload # 重启防火墙
+ps aux | grep nginx
 ```
 
+**卸载：**
+
+1. **停止 NGINX 服务**（可选）：
+
 ```bash
-# 使用 nginx 操作命令，必须先进入 nginx 目录中
-# /usr/local/nginx/sbin
+systemctl stop nginx
+```
 
-# 查看 nginx 版本号
-./nginx -v
+2. **卸载 NGINX**：
 
-# 启动 nginx
-./nginx
+```bash
+yum remove nginx
+```
 
-# 停止 nginx
-./nginx -s stop
+3. **（可选）清理不再需要的依赖项**：
 
-# 重新加载 nginx
-./nginx -s reload
+```bash
+yum autoremove
 ```
 
 ### nginx 配置文件
