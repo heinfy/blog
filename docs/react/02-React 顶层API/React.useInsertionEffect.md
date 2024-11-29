@@ -39,10 +39,6 @@ const Index: React.FC<any> = () => {
 export default Index;
 ```
 
-**效果：**
-
-![img](assets/0faddc177bb74af39f5c809f999ed45ctplv-k3u1fbpfcp-jj-mark1890000q75.avis)
-
 **执行顺序：** 在目前的版本中，React 官方共提供三种有关副作用的钩子，分别是 useEffect、useLayoutEffect 和 useInsertionEffect，我们一起来看看三者的执行顺序：
 
 ```tsx
@@ -58,9 +54,5 @@ const Index: React.FC<any> = () => {
 
 export default Index;
 ```
-
-**效果：**
-
-![img](assets/6ace9b2e6c3145b3b51d996af1b2b5detplv-k3u1fbpfcp-jj-mark1890000q75.avis)
 
 从效果上来看，可知三者的执行的顺序为：useInsertionEffect > useLayoutEffect > useEffect。

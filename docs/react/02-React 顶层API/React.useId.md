@@ -33,7 +33,3 @@ const Index: React.FC<any> = () => {
 
 export default Index;
 ```
-
-**效果：**
-
-![img](assets/8aac50eba3e84459bb114ad4c60540ddtplv-k3u1fbpfcp-jj-mark1890000q75.avis)

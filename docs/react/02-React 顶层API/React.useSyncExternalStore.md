@@ -72,8 +72,4 @@ const Index: React.FC<any> = () => {
 export default Index;
 ```
 
-**效果：**
-
-![useSyncExternalStore](assets/d9a7204b6c7842c2b50271e11f433f3atplv-k3u1fbpfcp-jj-mark1890000q75.avis)
-
-当我们点击按钮后，会触发 store.subscribe（订阅函数），执行 getSnapshot 后得到新的 count，此时 count 发生变化，就会触发更新。
+**效果：**当我们点击按钮后，会触发 store.subscribe（订阅函数），执行 getSnapshot 后得到新的 count，此时 count 发生变化，就会触发更新。

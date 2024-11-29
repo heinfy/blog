@@ -43,7 +43,7 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/heinfy/blog/tree/main/docs'
+          // editUrl: 'https://github.com/heinfy/blog/tree/main/docs'
         },
         blog: {
           showReadingTime: true,
@@ -117,14 +117,14 @@ const config = {
           {
             type: 'docSidebar',
             position: 'left',
-            sidebarId: 'mst',
-            label: '其他'
+            sidebarId: 'liunx',
+            label: 'Liunx'
           },
           {
             type: 'docSidebar',
             position: 'left',
-            sidebarId: 'liunx',
-            label: 'Liunx'
+            sidebarId: 'mst',
+            label: '其他'
           },
           // { to: '/blog', label: '博客', position: 'left' },
           {
