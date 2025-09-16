@@ -178,6 +178,8 @@ const mdStr = ref<string>(
 
 ## 实现方式二
 
+> 使用 `@vscode/markdown-it-katex` 解析数学公式
+> 
 ### 安装依赖
 
 ```bash
@@ -245,3 +247,78 @@ export default md;
 ## 效果图
 
 ![预览 md 文件](assets/003-markdown.png)
+
+## fetch SSE 流式获取大模型返回值
+
+```vue
+<template>
+  <div class="chat-container">
+    <button @click="question">调取 DeepSeek 的 API</button>
+    <MarkdownContent :content="textContent" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import MarkdownContent from '@/components/MarkdownContent.vue'
+
+const textContent = ref('')
+
+const question = async () => {
+  try {
+    let response = await fetch('/api/chat/stream', {
+      method: 'POST',
+      body: JSON.stringify({
+        messages: [
+          {
+            role: 'system',
+            content: '你是一个 helpful 助手',
+          },
+          {
+            role: 'user',
+            content: '请给我一首唐代李白的古诗，有标题和作者等信息，标题和作者要换行，不需要其他',
+          },
+        ],
+        stream: true,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    // 获取 reader
+    const reader = response.body?.getReader()
+    if (!reader) {
+      throw new Error('Failed to get reader from response body')
+    }
+
+    const decoder = new TextDecoder('utf-8')
+
+    while (true) {
+      const { done, value }: { done: boolean; value?: Uint8Array } = await reader.read()
+
+      if (done) {
+        console.log('Stream ended.')
+        break
+      }
+      // 正则匹配：
+      // 1. "data: 》\n\n\ndata: 李白\n\n".match(/(?<=data:\s)[\s\S]*?(?=\n\n)/g)
+      // 2. "data: 》\n\n\ndata: 李白\n\n".match(/data:\s([\s\S]*?)\n{2,}/g)
+      const chunk = decoder.decode(value, { stream: true }) // 支持流式解码
+      const lines = chunk.match(/data:\s([\s\S]*?)\n{2,}/g)!
+      for (const line of lines) {
+        const str = line.slice('data: '.length, line.lastIndexOf('\n\n'))
+        textContent.value += str
+      }
+    }
+
+    // 最后再 decode 一次剩余内容（防止截断）
+    textContent.value += decoder.decode()
+
+    console.log('textContent', JSON.stringify(textContent.value))
+  } catch (error) {
+    console.error('Fetch error:', error)
+  }
+}
+</script>
+```
