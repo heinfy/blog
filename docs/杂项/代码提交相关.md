@@ -1,6 +1,130 @@
-# 代码提交相关
+好的，在 Mac 上配置 Git 非常简单，只需几个步骤即可完成。这里为您提供一份从安装到基础配置的完整指南。
 
-## 提交规范
+### 安装 Git
+
+macOS 通常预装了 Git，但版本可能较旧。首先检查是否已安装以及版本号：
+
+1.  打开 **终端**（Terminal）应用程序（你可以在“应用程序” -> “实用工具”中找到它）。
+2.  输入以下命令并按回车：
+    ```bash
+    git --version
+    ```
+    *   **如果显示了版本号**（如 `git version 2.39.2 (Apple Git-143)`），说明已安装，你可以直接跳到 **[配置 Git](#配置-git)** 部分。
+    *   **如果提示 `command not found`**，说明你需要安装 Git。
+
+#### 推荐安装方法：使用 Homebrew
+
+[Homebrew](https://brew.sh/) 是 macOS 上最流行的包管理器，可以非常方便地安装和管理软件。
+
+1.  **安装 Homebrew**（如果你还没有安装）：
+    在终端中粘贴并运行以下命令：
+    ```bash
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
+    按照屏幕上的提示完成安装。
+
+2.  **使用 Homebrew 安装 Git**：
+    安装好 Homebrew 后，在终端运行：
+    ```bash
+    brew install git
+    ```
+
+#### 其他安装方法
+
+*   **官方安装程序**：从 Git 官网下载 macOS 安装程序并直接安装。
+    *   访问：[https://git-scm.com/download/mac](https://git-scm.com/download/mac)
+*   **Xcode Command Line Tools**：安装 Xcode 或单独安装其命令行工具也会包含 Git。
+    *   在终端中运行 `xcode-select --install`，然后点击“安装”即可。
+
+安装完成后，再次运行 `git --version` 确认安装成功且版本较新。
+
+---
+
+### 配置 Git
+
+安装好 Git 后，最重要的一步是配置你的用户信息，这样你每次提交代码时，Git 才知道是谁提交的。
+
+1.  在终端中，设置你的**用户名**（通常使用你的英文名或 GitHub 用户名）：
+    ```bash
+    git config --global user.name "Your Name"
+    ```
+    （将 `"Your Name"` 替换为你的名字，例如 `"Zhang San"`）
+
+2.  设置你的**邮箱地址**（**必须**使用你在 GitHub/GitLab 等代码托管平台上注册的邮箱）：
+    ```bash
+    git config --global user.email "your.email@example.com"
+    ```
+    （将 `"your.email@example.com"` 替换为你的邮箱）
+
+3.  （可选，但推荐）设置默认的文本编辑器。
+    *   如果你喜欢用 VS Code：
+        ```bash
+        git config --global core.editor "code --wait"
+        ```
+    *   如果你喜欢用 macOS 自带的 Nano：
+        ```bash
+        git config --global core.editor "nano"
+        ```
+
+4.  （可选，但推荐）让 Git 输出带颜色，方便阅读：
+    ```bash
+    git config --global color.ui auto
+    ```
+
+#### 检查你的配置
+
+要查看你所有的 Git 配置项，可以使用命令：
+```bash
+git config --list
+```
+
+你应该能看到刚才设置的 `user.name` 和 `user.email`。
+
+---
+
+### 生成 SSH 密钥
+
+为了安全地与远程仓库（如 GitHub）通信，你需要配置 SSH 密钥，避免每次推送代码都输入密码。
+
+1.  **生成新的 SSH 密钥**：
+    在终端中运行以下命令（替换为你的邮箱）：
+    ```bash
+    ssh-keygen -t ed25519 -C "your.email@example.com"
+    ```
+    *   提示你“Enter file in which to save the key”时，直接按回车使用默认路径（`~/.ssh/id_ed25519`）。
+    *   提示你“Enter passphrase”时，可以设置一个密码来增加安全性，也可以直接按回车留空。
+
+2.  **将 SSH 密钥添加到 ssh-agent**：
+    ```bash
+    # 启动 ssh-agent
+    eval "$(ssh-agent -s)"
+    # 将你的 SSH 私钥添加到 ssh-agent
+    ssh-add ~/.ssh/id_ed25519
+    ```
+
+3.  **将公钥添加到你的 GitHub/GitLab 账户**：
+    *   **复制公钥内容**：
+        ```bash
+        cat ~/.ssh/id_ed25519.pub
+        ```
+        终端会显示一长串以 `ssh-ed25519` 开头、你的邮箱结尾的内容，全部选中并复制。
+    *   **添加到 GitHub**：
+        1.  登录 GitHub，点击右上角头像 -> **Settings**。
+        2.  在左侧边栏中点击 **SSH and GPG keys**。
+        3.  点击 **New SSH key**。
+        4.  在 "Title" 中起个名字（如 `My MacBook Air`），然后将刚才复制的内容粘贴到 "Key" 框中。
+        5.  点击 **Add SSH key**。
+
+4.  **测试连接**：
+    在终端运行：
+    ```bash
+    ssh -T git@github.com
+    ```
+    如果看到类似 `Hi username! You've successfully authenticated...` 的欢迎信息，说明配置成功！
+
+---
+
+## 代码提交规范
 
 - feat: 新功能
 - fix: 修复问题
@@ -14,7 +138,9 @@
 - chore: 其他不修改 src 或测试文件的更改
 - revert: 回滚某次提交
 
-## Git 基础操作
+## Git 命令
+
+1. 基础命令
 
 ```bash
 git add . // 将文件添加到缓存区
@@ -28,10 +154,10 @@ git push -u origin 分支名称 // 第一次提交分支（推送到云端origin
 git merge 分支名称 // 必须先切换到主分支，然后在合并分支
 
 # 如果不下心在master分支上写了代码
-# 直接git checkout -b test 就能将修改的文件分配到test分支上，然后在 git add 等操作
+# 直接git checkout -b test 就能将修改的文件分配到 test 分支上，然后在 git add 等操作
 ```
 
-## Git 日志
+2. Git 日志
 
 ```bash
 git log // 查看历史记录
@@ -48,7 +174,7 @@ git diff HEAD // 比对工作目录和上一条提交
 git reflog // 查看记录的每一条指令
 ```
 
-## Git 克隆分支
+3. Git 克隆分支
 
 ```bash
 # 切换到 dev 分支
@@ -67,7 +193,7 @@ git checkout -b 本地demo分支 origin/远端demo分支
 git clone -b yourBranch https:.../branch
 ```
 
-## Git 推送分支
+4. Git 推送分支
 
 ```bash
 # 提交本地分支到远程分支
@@ -77,7 +203,7 @@ git push origin 本地分支:远程分支
 git push origin demo:demo
 ```
 
-## Git 删除分支
+5. Git 删除分支
 
 ```bash
 # 删除本地的bug分支
@@ -87,7 +213,7 @@ git branch -d bug
 git push origin --delete demo
 ```
 
-## 同步本地和远端的分支
+6. 同步本地和远端的分支
 
 ```bash
 # 查看本地分支和追踪情况
@@ -97,7 +223,7 @@ git remote show origin
 git remote prune origin
 ```
 
-## Git 强制覆盖
+7. Git 强制覆盖
 
 ```bash
 git fetch --all
@@ -105,7 +231,7 @@ git reset --hard origin/master
 git pull
 ```
 
-### 变基
+8. 变基
 
 rebase——把你指定的 commit 以及它所在的 commit 串，以指定的目标 commit 为基础，依次重新提交一次。
 
@@ -122,7 +248,7 @@ git merge branch1
 git rebase --help // 查看帮助
 ```
 
-### 多次commit未push
+9. 多次 commit 未 push
 
 ```bash
 git add a.txt // 更新一个文件内容
@@ -154,7 +280,7 @@ git reset --hard commitID // 强制撤销， soft hard mixed 视情况而定
 git push origin HEAD --force // 推送到远端
 ```
 
-### 撤销错误添加到暂存区里的文件
+10. 撤销错误添加到暂存区里的文件
 
 ```bash
 # 撤销错误添加到暂存区里的文件 命令行 : 
@@ -184,7 +310,7 @@ git revert HEAD~1 //撤销上上次的提交，注意：数字从0开始
 git revert 0ffaacc //撤销0ffaacc这次提交
 ```
 
-### git追踪文件夹/文件名称更新
+11. git追踪文件夹/文件名称更新
 
 ```bash
 git mv -f oldfolder newfolder
