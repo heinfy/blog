@@ -1,12 +1,10 @@
 ---
-id: p_liunx
-title: Liunx 相关链接
+id: liunx
+title: Liunx 基础
 keywords: [Liunx]
 tags:
   - Liunx
-hide_title: true
-sidebar_position: 1
-custom_edit_url: null
+sidebar_position: 3
 ---
 
 - [Centos 6/7 防火墙设置与开放端口](https://www.jianshu.com/p/144023ced33c)

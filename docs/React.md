@@ -1,12 +1,10 @@
 ---
-id: p_react
-title: React 相关链接
+id: react
+title: React 相关
 keywords: [React]
 tags:
   - React
-hide_title: true
-sidebar_position: 1
-custom_edit_url: null
+sidebar_position: 4
 ---
 
 - [react 官网](https://react.dev/)

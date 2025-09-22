@@ -1,13 +1,10 @@
 ---
-id: p_vue
+id: vue
 title: Vue
 keywords: [Vue]
 tags:
   - Vue
-hide_title: true
-sidebar_position: 1
-description: 认识 Vue
-custom_edit_url: null
+sidebar_position: 6
 ---
 
 ### 常用链接

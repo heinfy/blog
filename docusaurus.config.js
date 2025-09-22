@@ -40,7 +40,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve('./sidebars.js')
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           // editUrl: 'https://github.com/heinfy/blog/tree/main/docs'
@@ -66,24 +66,17 @@ const config = {
       navbar: {
         title: 'heinfy',
         logo: {
-          alt: "heinfy'ss logo",
+          alt: "heinfy's logo",
           src: 'img/logo.svg'
         },
         items: [
-          // cli 自带的侧边栏，我把文档放到 docs/docusaurus/
-          /* {
-            type: 'docSidebar',
-            sidebarId: 'docusaurus',
-            position: 'left',
-            label: 'docusaurus'
-          }, */
-          // 导航栏链接到侧边栏
           {
             type: 'docSidebar',
             position: 'left',
-            sidebarId: 'h5c3',
-            label: 'HTML和CSS'
+            sidebarId: 'typescript',
+            label: 'Typescript'
           },
+
           {
             type: 'docSidebar',
             position: 'left',
@@ -105,20 +98,14 @@ const config = {
           {
             type: 'docSidebar',
             position: 'left',
-            sidebarId: 'typescript',
-            label: 'Typescript'
-          },
-          {
-            type: 'docSidebar',
-            position: 'left',
-            sidebarId: 'ebook',
-            label: '电子书'
-          },
-          {
-            type: 'docSidebar',
-            position: 'left',
             sidebarId: 'liunx',
             label: 'Liunx'
+          },
+          {
+            type: 'docSidebar',
+            position: 'left',
+            sidebarId: 'h5c3',
+            label: 'HTML和CSS'
           },
           {
             type: 'docSidebar',
